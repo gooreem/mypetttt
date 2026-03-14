@@ -1,7 +1,7 @@
 {
     "name": {
-        "ar": "ماى بيت - تجريبي",
-        "en": "MyPetttt - Test"
+        "ar": "ماى بيت",
+        "en": "MyPetttt"
     },
     "repository": "https://github.com/gooreem/mypetttt",
     "author_email": "goreem.eg@gmail.com",
@@ -10,7 +10,7 @@
     ],
     "components": [
         {
-            "key": "simple-slider-001",
+            "key": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "title": {
                 "en": "Simple Slider",
                 "ar": "سليدر بسيط"
@@ -19,13 +19,10 @@
             "path": "home.simple-slider",
             "fields": [
                 {
-                    "type": "string",
-                    "id": "title",
-                    "label": {
-                        "ar": "العنوان",
-                        "en": "Title"
-                    },
-                    "format": "text"
+                    "type": "static",
+                    "format": "description",
+                    "id": "test-message",
+                    "value": "<div style='background:green;color:white;padding:20px;font-size:20px;text-align:center;'>✅ السكشن شغال!</div>"
                 }
             ]
         }
