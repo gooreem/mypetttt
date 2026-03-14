@@ -1,101 +1,28 @@
 {
     "name": {
-        "ar": "ماى بيت - بناء تدريجي",
-        "en": "MyPetttt - Gradual Build"
+        "ar": "ماى بيت - تجربة أساسية 2",
+        "en": "MyPetttt - Basic Test 2"
     },
     "repository": "https://github.com/gooreem/mypetttt",
     "author_email": "goreem.eg@gmail.com",
     "features": [
-        "component-simple-slider",
-        "component-simple-banner"
+        "component-enhanced-slider"
     ],
     "components": [
         {
-            "key": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+            "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
-                "en": "Simple Slider",
-                "ar": "سليدر بسيط"
+                "en": "Enhanced Slider",
+                "ar": "صور متحركة (محسنة)"
             },
             "icon": "sicon-image-carousel",
-            "path": "home.simple-slider",
+            "path": "home.enhanced-slider",
             "fields": [
                 {
-                    "type": "string",
-                    "id": "main_title",
-                    "label": {
-                        "ar": "عنوان السليدر",
-                        "en": "Slider Title"
-                    },
-                    "format": "text",
-                    "multilanguage": true
-                },
-                {
-                    "id": "slides",
-                    "type": "collection",
-                    "format": "collection",
-                    "label": {
-                        "ar": "الصور",
-                        "en": "Images"
-                    },
-                    "item_label": {
-                        "ar": "صورة",
-                        "en": "Image"
-                    },
-                    "minLength": 1,
-                    "maxLength": 5,
-                    "fields": [
-                        {
-                            "type": "string",
-                            "id": "image",
-                            "label": {
-                                "ar": "الصورة",
-                                "en": "Image"
-                            },
-                            "format": "image",
-                            "required": true
-                        },
-                        {
-                            "type": "string",
-                            "id": "title",
-                            "label": {
-                                "ar": "عنوان الصورة",
-                                "en": "Image Title"
-                            },
-                            "format": "text",
-                            "multilanguage": true
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "key": "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
-            "title": {
-                "en": "Simple Banner",
-                "ar": "بانر بسيط"
-            },
-            "icon": "sicon-image",
-            "path": "home.horizontal-banner",
-            "fields": [
-                {
-                    "type": "string",
-                    "id": "banner_title",
-                    "label": {
-                        "ar": "عنوان البانر",
-                        "en": "Banner Title"
-                    },
-                    "format": "text",
-                    "multilanguage": true
-                },
-                {
-                    "type": "string",
-                    "id": "banner_image",
-                    "label": {
-                        "ar": "صورة البانر",
-                        "en": "Banner Image"
-                    },
-                    "format": "image",
-                    "required": true
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-desc",
+                    "value": "<div style='background:#21636d;color:white;padding:30px;border-radius:12px;text-align:center;font-size:20px;'><h2>✅ سكشن الصور المتحركة يعمل</h2><p>إذا ظهر هذا النص، فالسكشن الأساسي الثاني يعمل أيضاً.</p></div>"
                 }
             ]
         }
