@@ -66,7 +66,8 @@
                 }
             ],
             "source": "Manual",
-            "required": true
+            "required": true,
+            "public": true
         },
         {
             "type": "boolean",
@@ -77,7 +78,8 @@
             "format": "switch",
             "required": false,
             "value": false,
-            "selected": false
+            "selected": false,
+            "public": true
         },
         {
             "type": "boolean",
@@ -104,9 +106,10 @@
             "type": "boolean",
             "icon": "sicon-toggle-off",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": true
+            "selected": true,
+            "public": true
         },
         {
             "type": "boolean",
@@ -115,9 +118,10 @@
             "description": null,
             "id": "topnav_is_dark",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": false
+            "selected": false,
+            "public": true
         },
         {
             "type": "boolean",
@@ -126,9 +130,10 @@
             "description": "مثل صفحة الهبوط ، المدونة ،الصفحات التعريفية",
             "id": "important_links",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": true
+            "selected": true,
+            "public": true
         },
         {
             "type": "boolean",
@@ -137,9 +142,10 @@
             "description": "عند تفعيلها، ستظهر الروابط الإضافية في قائمة منسدلة تسمى 'المزيد' عند عدم وجود مساحة كافية",
             "id": "enable_more_menu",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": true
+            "selected": true,
+            "public": true
         },
         {
             "type": "static",
@@ -160,9 +166,10 @@
             "description": null,
             "id": "footer_is_dark",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": false
+            "selected": false,
+            "public": true
         },
         {
             "type": "static",
@@ -183,9 +190,10 @@
             "description": null,
             "id": "enable_add_product_toast",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": true
+            "selected": true,
+            "public": true
         },
         {
             "type": "boolean",
@@ -194,9 +202,10 @@
             "description": null,
             "id": "sticky_add_to_cart",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": true
+            "selected": true,
+            "public": true
         },
         {
             "type": "boolean",
@@ -205,9 +214,10 @@
             "description": null,
             "id": "show_tags",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": true,
-            "selected": true
+            "selected": true,
+            "public": true
         },
         {
             "id": "slider_background_size",
@@ -237,7 +247,8 @@
                 }
             ],
             "source": "Manual",
-            "required": true
+            "required": true,
+            "public": true
         },
         {
             "type": "boolean",
@@ -246,9 +257,10 @@
             "description": "هذه الخاصية تمكنك من تكبير الصورة لتسهل رؤية المزيد من التفاصيل بها",
             "id": "imageZoom",
             "format": "switch",
-            "required": false,
+            "required": true,
             "value": false,
-            "selected": false
+            "selected": false,
+            "public": true
         },
         {
             "id": "collection",
