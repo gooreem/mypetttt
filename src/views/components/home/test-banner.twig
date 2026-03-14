@@ -1,0 +1,20 @@
+{# test-banner.twig #}
+<section class="py-12">
+    <div class="container mx-auto px-4">
+        {% if section.settings.banner_image %}
+            <div class="relative rounded-lg overflow-hidden shadow-lg">
+                <img src="{{ section.settings.banner_image }}" 
+                     alt="Test Banner" 
+                     class="w-full h-auto object-cover">
+                <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4 text-center">
+                    <p class="text-lg">✅ البانر يعمل - الصورة تم تحميلها</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 p-8 rounded-lg text-center">
+                <p class="text-xl font-bold">⚠️ لم تضع صورة بعد</p>
+                <p class="mt-2">الرجاء إضافة صورة من إعدادات السكشن</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
