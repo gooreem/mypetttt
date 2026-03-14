@@ -19,10 +19,51 @@
             "path": "home.simple-slider",
             "fields": [
                 {
-                    "type": "static",
-                    "format": "description",
-                    "id": "test-message",
-                    "value": "<div style='background:green;color:white;padding:20px;font-size:20px;text-align:center;'>✅ السكشن شغال!</div>"
+                    "type": "string",
+                    "id": "main_title",
+                    "label": {
+                        "ar": "عنوان السليدر",
+                        "en": "Slider Title"
+                    },
+                    "format": "text",
+                    "multilanguage": true
+                },
+                {
+                    "id": "slides",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": {
+                        "ar": "الصور",
+                        "en": "Images"
+                    },
+                    "item_label": {
+                        "ar": "صورة",
+                        "en": "Image"
+                    },
+                    "minLength": 1,
+                    "maxLength": 5,
+                    "fields": [
+                        {
+                            "type": "string",
+                            "id": "image",
+                            "label": {
+                                "ar": "الصورة",
+                                "en": "Image"
+                            },
+                            "format": "image",
+                            "required": true
+                        },
+                        {
+                            "type": "string",
+                            "id": "title",
+                            "label": {
+                                "ar": "عنوان الصورة",
+                                "en": "Image Title"
+                            },
+                            "format": "text",
+                            "multilanguage": true
+                        }
+                    ]
                 }
             ]
         }
