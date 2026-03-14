@@ -249,6 +249,48 @@
             "required": false,
             "value": false,
             "selected": false
+        },
+        {
+            "id": "collection",
+            "type": "collection",
+            "format": "collection",
+            "label": "Collection",
+            "description": null,
+            "labelHTML": null,
+            "item_label": null,
+            "icon": "sicon-list-add",
+            "fields": [],
+            "value": [],
+            "minLength": 1,
+            "maxLength": 5
+        },
+        {
+            "id": "collection_1",
+            "type": "collection",
+            "format": "collection",
+            "label": "Collection 1",
+            "description": null,
+            "labelHTML": null,
+            "item_label": null,
+            "icon": "sicon-list-add",
+            "fields": [],
+            "value": [],
+            "minLength": 1,
+            "maxLength": 5
+        },
+        {
+            "id": "collection_2",
+            "type": "collection",
+            "format": "collection",
+            "label": "Collection 2",
+            "description": null,
+            "labelHTML": null,
+            "item_label": null,
+            "icon": "sicon-list-add",
+            "fields": [],
+            "value": [],
+            "minLength": 1,
+            "maxLength": 5
         }
     ],
     "components": [
