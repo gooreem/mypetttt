@@ -32,7 +32,16 @@
         "component-features-with-icons",
         "component-best-selling-slider",
         "component-categories-grid-4",
-        "component-new-products-grid-6"
+        "component-new-products-grid-6",
+        "component-products-grid-filter",
+        "component-banners-with-video",
+        "component-subcategories-grid-8",
+        "component-enhanced-slider",
+        "component-main-links",
+        "component-slider-products-with-header",
+        "component-enhanced-square-banners",
+        "component-brands",
+        "component-custom-testimonials"
     ],
     "settings": [
         {
@@ -44,6 +53,108 @@
         }
     ],
     "components": [
+        {
+            "key": "enhanced-slider-original",
+            "title": {
+                "en": "Enhances Animated Images",
+                "ar": "صور متحركة (محسنة)"
+            },
+            "icon": "sicon-image-carousel",
+            "path": "home.enhanced-slider",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "preview",
+                    "value": "<div style='background:#21636d;color:white;padding:20px;'>✅ صور متحركة محسنة</div>"
+                }
+            ]
+        },
+        {
+            "key": "main-links-original",
+            "title": {
+                "en": "Quick Links",
+                "ar": "روابط سريعة"
+            },
+            "icon": "sicon-layout-grid-rearrange",
+            "path": "home.main-links",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "preview",
+                    "value": "<div style='background:darkblue;color:white;padding:20px;'>✅ روابط سريعة</div>"
+                }
+            ]
+        },
+        {
+            "key": "slider-products-header-original",
+            "title": {
+                "en": "Animated products with a background",
+                "ar": "منتجات متحركة مع خلفية"
+            },
+            "icon": "sicon-list-play",
+            "path": "home.slider-products-with-header",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "preview",
+                    "value": "<div style='background:darkgreen;color:white;padding:20px;'>✅ منتجات متحركة مع خلفية</div>"
+                }
+            ]
+        },
+        {
+            "key": "enhanced-square-banners-original",
+            "title": {
+                "en": "Enhanced square images",
+                "ar": "صور مربعة (محسنة)"
+            },
+            "icon": "sicon-image",
+            "path": "home.enhanced-square-banners",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "preview",
+                    "value": "<div style='background:darkred;color:white;padding:20px;'>✅ صور مربعة محسنة</div>"
+                }
+            ]
+        },
+        {
+            "key": "brands-original",
+            "title": {
+                "en": "Brands",
+                "ar": "الماركات التجارية"
+            },
+            "icon": "sicon-award-ribbon",
+            "path": "home.brands",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "preview",
+                    "value": "<div style='background:darkviolet;color:white;padding:20px;'>✅ ماركات تجارية</div>"
+                }
+            ]
+        },
+        {
+            "key": "custom-testimonials-original",
+            "title": {
+                "en": "Custom testimonials",
+                "ar": "آراء عملاء مخصصة"
+            },
+            "icon": "sicon-chat-bubbles",
+            "path": "home.custom-testimonials",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "preview",
+                    "value": "<div style='background:gold;color:black;padding:20px;'>✅ آراء عملاء مخصصة</div>"
+                }
+            ]
+        },
         {
             "key": "responsive-slider-002",
             "title": {
@@ -213,11 +324,62 @@
                     "value": "<div style='background:cyan;color:black;padding:20px;'>✅ حديثة</div>"
                 }
             ]
+        },
+        {
+            "key": "products-grid-filter-001",
+            "title": {
+                "en": "Products Grid with Advanced Filter",
+                "ar": "شبكة منتجات مع فلترة متقدمة"
+            },
+            "icon": "sicon-layout-grid",
+            "path": "home.products-grid-with-filter",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-preview",
+                    "value": "<div style='background:magenta;color:white;padding:20px;'>✅ شبكة منتجات مع فلترة</div>"
+                }
+            ]
+        },
+        {
+            "key": "banners-with-video-006",
+            "title": {
+                "en": "2 Banners + Video",
+                "ar": "بانرين وفيديو"
+            },
+            "icon": "sicon-video",
+            "path": "home.banners-with-video",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-preview",
+                    "value": "<div style='background:darkorange;color:white;padding:20px;'>✅ بانرين وفيديو</div>"
+                }
+            ]
+        },
+        {
+            "key": "subcategories-grid-8-012",
+            "title": {
+                "en": "8 Subcategories Grid",
+                "ar": "أقسام فرعية (8 مربعات)"
+            },
+            "icon": "sicon-layout-grid",
+            "path": "home.subcategories-grid-8",
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "static-preview",
+                    "value": "<div style='background:indigo;color:white;padding:20px;'>✅ 8 أقسام فرعية</div>"
+                }
+            ]
         }
     ],
     "support_url": null,
     "description": {
-        "ar": "ثيم تجريبي بـ 10 سكشنز",
-        "en": "Test theme with 10 sections"
+        "ar": "ثيم كامل بـ 19 سكشن",
+        "en": "Complete theme with 19 sections"
     }
 }
