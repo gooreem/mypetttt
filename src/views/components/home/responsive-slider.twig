@@ -1,0 +1,373 @@
+{# =============================================================================
+   سكشن: سليدر متجاوب (Responsive Slider)
+   الوصف: سليدر يعرض 3 صور - في الكمبيوتر أفقي، في الجوال عمودي
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="responsive-slider-section py-6 md:py-8" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان السكشن إذا كان موجوداً في الإعدادات #}
+        {% if section.settings.title %}
+            <div class="section-title text-center mb-6 md:mb-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-900">{{ section.settings.title }}</h2>
+            </div>
+        {% endif %}
+        
+        {# =========================================================================
+           وضع الكمبيوتر: سليدر أفقي (يظهر فقط في الشاشات المتوسطة والكبيرة)
+           ========================================================================= #}
+        <div class="hidden md:block relative slider-desktop">
+            {% if section.settings.slides | length > 0 %}
+                <div class="swiper main-slider" id="desktopSlider-{{ section.id }}" dir="ltr">
+                    <div class="swiper-wrapper">
+                        {% for slide in section.settings.slides %}
+                            <div class="swiper-slide">
+                                <div class="relative rounded-xl overflow-hidden group cursor-pointer" 
+                                     onclick="window.location='{{ slide.link | default('javascript:void(0)') }}'">
+                                    {# صورة السليدر #}
+                                    <img src="{{ slide.image }}" 
+                                         alt="{{ slide.title | default('') }}" 
+                                         class="w-full h-[400px] lg:h-[500px] object-cover transition-transform duration-700 group-hover:scale-105">
+                                    
+                                    {# طبقة تعتم خفيفة #}
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                    
+                                    {# محتوى نصي على الصورة #}
+                                    {% if slide.title or slide.description %}
+                                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white text-right">
+                                            {% if slide.title %}
+                                                <h3 class="text-2xl md:text-4xl font-bold mb-2 drop-shadow-lg">{{ slide.title }}</h3>
+                                            {% endif %}
+                                            {% if slide.description %}
+                                                <p class="text-base md:text-lg opacity-90 drop-shadow">{{ slide.description }}</p>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {# أزرار التنقل (أسهم) #}
+                    <div class="swiper-button-next !text-white !bg-black/30 !w-10 !h-10 rounded-full hover:!bg-black/50 transition"></div>
+                    <div class="swiper-button-prev !text-white !bg-black/30 !w-10 !h-10 rounded-full hover:!bg-black/50 transition"></div>
+                    
+                    {# نقاط التصفح #}
+                    <div class="swiper-pagination !relative !bottom-0 mt-4"></div>
+                </div>
+            {% else %}
+                {# رسالة إذا لم توجد صور - تظهر فقط للمطور #}
+                {% if is_developer_mode %}
+                    <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg text-center">
+                        يرجى إضافة صور للسليدر من إعدادات القسم
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        {# =========================================================================
+           وضع الجوال: شبكة عمودية (يظهر فقط في الشاشات الصغيرة)
+           ========================================================================= #}
+        <div class="block md:hidden mobile-grid space-y-4">
+            {% if section.settings.slides | length > 0 %}
+                {% for slide in section.settings.slides %}
+                    <div class="mobile-slide-item relative rounded-xl overflow-hidden group cursor-pointer"
+                         onclick="window.location='{{ slide.link | default('javascript:void(0)') }}'">
+                        {# صورة السليدر #}
+                        <img src="{{ slide.image }}" 
+                             alt="{{ slide.title | default('') }}" 
+                             class="w-full h-[250px] object-cover transition-transform duration-500 group-hover:scale-105">
+                        
+                        {# طبقة تعتم خفيفة #}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        
+                        {# محتوى نصي على الصورة #}
+                        {% if slide.title or slide.description %}
+                            <div class="absolute bottom-0 left-0 right-0 p-4 text-white text-right">
+                                {% if slide.title %}
+                                    <h3 class="text-xl font-bold mb-1 drop-shadow-lg">{{ slide.title }}</h3>
+                                {% endif %}
+                                {% if slide.description %}
+                                    <p class="text-sm opacity-90 drop-shadow">{{ slide.description }}</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "سليدر متجاوب",
+        "en": "Responsive Slider"
+    },
+    "icon": "sicon-image-carousel",
+    "description": {
+        "ar": "سليدر يعرض 3 صور - في الكمبيوتر أفقي، في الجوال عمودي",
+        "en": "Slider with 3 images - Horizontal on desktop, vertical on mobile"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم (اختياري)",
+                "en": "Section Title (Optional)"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "placeholder": {
+                "ar": "أدخل عنوان القسم...",
+                "en": "Enter section title..."
+            }
+        },
+        {
+            "id": "slides",
+            "type": "collection",
+            "format": "collection",
+            "required": true,
+            "minLength": 1,
+            "maxLength": 10,
+            "label": {
+                "ar": "صور السليدر",
+                "en": "Slider Images"
+            },
+            "item_label": {
+                "ar": "صورة",
+                "en": "Image"
+            },
+            "value": [
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/MopzhoqpTkDObcKc8Q8n77AuydanfsGXdZO7iinH.jpg",
+                    "title": {
+                        "ar": "تسوق الآن",
+                        "en": "Shop Now"
+                    },
+                    "description": {
+                        "ar": "خصومات تصل إلى 50%",
+                        "en": "Up to 50% OFF"
+                    },
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/3gOhYSaIhaHxhH2IHWxJYDl9JHwxP6dGKiZFSq4K.jpg",
+                    "title": {
+                        "ar": "توصيل مجاني",
+                        "en": "Free Shipping"
+                    },
+                    "description": {
+                        "ar": "لجميع الطلبات فوق 200 ريال",
+                        "en": "For all orders above 200 SAR"
+                    },
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/8kH2jHsL9pQrTsV5wNxYzA1bC3dE4fG5hI6jK7lM.jpg",
+                    "title": {
+                        "ar": "منتجات حصرية",
+                        "en": "Exclusive Products"
+                    },
+                    "description": {
+                        "ar": "تسوق أحدث الواصل",
+                        "en": "Shop New Arrivals"
+                    },
+                    "link": null
+                }
+            ],
+            "fields": [
+                {
+                    "type": "string",
+                    "icon": "sicon-image",
+                    "id": "image",
+                    "label": {
+                        "ar": "صورة السليدر",
+                        "en": "Slider Image"
+                    },
+                    "format": "image",
+                    "required": true,
+                    "description": {
+                        "ar": "* المقاس المناسب: 1920×600 بكسل (يفضل)",
+                        "en": "* Recommended size: 1920×600 px"
+                    }
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-format-text-alt",
+                    "id": "title",
+                    "label": {
+                        "ar": "عنوان رئيسي",
+                        "en": "Main Title"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": false,
+                    "placeholder": {
+                        "ar": "أدخل عنوان الصورة...",
+                        "en": "Enter image title..."
+                    },
+                    "maxLength": 100
+                },
+                {
+                    "type": "string",
+                    "icon": "sicon-typography",
+                    "id": "description",
+                    "label": {
+                        "ar": "نص إضافي",
+                        "en": "Additional Text"
+                    },
+                    "format": "textarea",
+                    "multilanguage": true,
+                    "required": false,
+                    "placeholder": {
+                        "ar": "أدخل نصاً توضيحياً...",
+                        "en": "Enter description..."
+                    },
+                    "maxLength": 255
+                },
+                {
+                    "type": "items",
+                    "icon": "sicon-link",
+                    "id": "link",
+                    "label": {
+                        "ar": "الرابط",
+                        "en": "Link"
+                    },
+                    "format": "variable-list",
+                    "required": false,
+                    "searchable": true,
+                    "source": "custom",
+                    "sources": [
+                        {
+                            "label": {
+                                "ar": "منتج",
+                                "en": "Product"
+                            },
+                            "key": "products",
+                            "value": "products"
+                        },
+                        {
+                            "label": {
+                                "ar": "تصنيف",
+                                "en": "Category"
+                            },
+                            "key": "categories",
+                            "value": "categories"
+                        },
+                        {
+                            "label": {
+                                "ar": "صفحة تعريفية",
+                                "en": "Page"
+                            },
+                            "key": "pages",
+                            "value": "pages"
+                        },
+                        {
+                            "label": {
+                                "ar": "التخفيضات",
+                                "en": "Offers"
+                            },
+                            "key": "offers_link",
+                            "value": "offers_link"
+                        },
+                        {
+                            "label": {
+                                "ar": "المدونة",
+                                "en": "Blog"
+                            },
+                            "key": "blog_link",
+                            "value": "blog_link"
+                        },
+                        {
+                            "label": {
+                                "ar": "رابط خارجي",
+                                "en": "Custom URL"
+                            },
+                            "key": "custom",
+                            "value": "custom"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "boolean",
+            "id": "autoplay",
+            "label": {
+                "ar": "تشغيل تلقائي",
+                "en": "Autoplay"
+            },
+            "format": "switch",
+            "value": true,
+            "description": {
+                "ar": "تحريك السليدر تلقائياً",
+                "en": "Automatically slide images"
+            }
+        },
+        {
+            "type": "number",
+            "id": "autoplay_speed",
+            "label": {
+                "ar": "سرعة التحريك (بالثواني)",
+                "en": "Autoplay Speed (seconds)"
+            },
+            "format": "number",
+            "value": 5,
+            "minimum": 2,
+            "maximum": 10,
+            "description": {
+                "ar": "المدة بين كل صورة وأخرى",
+                "en": "Duration between slides"
+            }
+        }
+    ]
+}
+{% endschema %}
+
+{% if section.settings.autoplay %}
+    <style>
+        /* تنسيقات إضافية للسليدر */
+        .swiper-button-next:after, .swiper-button-prev:after {
+            font-size: 18px !important;
+        }
+        
+        .swiper-pagination-bullet {
+            background: white !important;
+            opacity: 0.7 !important;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background: white !important;
+            opacity: 1 !important;
+        }
+    </style>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تهيئة سليدر سطح المكتب فقط إذا كان موجوداً
+        const desktopSlider = document.getElementById('desktopSlider-{{ section.id }}');
+        if (desktopSlider && typeof Swiper !== 'undefined') {
+            new Swiper(desktopSlider, {
+                loop: true,
+                autoplay: {
+                    delay: {{ section.settings.autoplay_speed | default(5) * 1000 }},
+                    disableOnInteraction: false,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                effect: 'slide',
+                speed: 800,
+            });
+        }
+    });
+    </script>
+{% endif %}

@@ -1,0 +1,399 @@
+{# =============================================================================
+   سكشن: أربع أقسام مع صور مربعة (4 Categories Grid)
+   الوصف: عرض 4 أقسام رئيسية للمتجر في شبكة جذابة مع صور مربعة وتأثيرات
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="categories-grid-4-section py-16 md:py-20" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان القسم #}
+        <div class="section-title text-center mb-12">
+            <span class="inline-block text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">
+                {{ section.settings.badge_text | default('أقسام المتجر') }}
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                {{ section.settings.title | default('تسوق حسب القسم') }}
+            </h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        {# شبكة الأقسام - تصميم 2x2 #}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            
+            {# عرض الأقسام الأربعة #}
+            {% for category in section.settings.categories %}
+                <div class="category-card group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 {% if loop.first %}md:col-span-1{% endif %}">
+                    
+                    {# صورة القسم #}
+                    <div class="aspect-square overflow-hidden">
+                        <img src="{{ category.image | default('https://via.placeholder.com/600x600?text=Category') }}" 
+                             alt="{{ category.name }}"
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    </div>
+                    
+                    {# طبقة التدرج اللوني #}
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                    
+                    {# محتوى القسم #}
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform transition-transform duration-500 group-hover:translate-y-[-4px]">
+                        <h3 class="text-2xl md:text-3xl font-bold mb-2">{{ category.name }}</h3>
+                        
+                        {% if category.description %}
+                            <p class="text-sm text-gray-200 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                {{ category.description }}
+                            </p>
+                        {% endif %}
+                        
+                        {# زر الانتقال للقسم #}
+                        <a href="{{ category.link | default('#') }}" 
+                           class="inline-flex items-center text-white font-medium group-hover:text-blue-300 transition">
+                            <span>تسوق الآن</span>
+                            <svg class="w-4 h-4 mr-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    {# عداد المنتجات (اختياري) #}
+                    {% if category.products_count %}
+                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-medium text-gray-800">
+                            {{ category.products_count }} منتج
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        
+        {# صف إضافي لعلامات تجارية أو عروض (اختياري) #}
+        {% if section.settings.show_promo %}
+            <div class="mt-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-6 text-white text-center">
+                <p class="text-lg mb-2">{{ section.settings.promo_text | default('عروض حصرية على جميع الأقسام') }}</p>
+                <a href="{{ section.settings.promo_link | default('#') }}" class="inline-block bg-white text-blue-600 font-bold px-6 py-2 rounded-lg hover:bg-blue-50 transition">
+                    استكشف العروض
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "أربع أقسام رئيسية",
+        "en": "4 Categories Grid"
+    },
+    "icon": "sicon-layout-grid",
+    "description": {
+        "ar": "عرض 4 أقسام رئيسية للمتجر في شبكة جذابة مع صور مربعة",
+        "en": "Display 4 main store categories in an attractive grid with square images"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "badge_text",
+            "label": {
+                "ar": "نص الشارة",
+                "en": "Badge Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "أقسام المتجر",
+                "en": "Store Categories"
+            }
+        },
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم",
+                "en": "Section Title"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "تسوق حسب القسم",
+                "en": "Shop by Category"
+            }
+        },
+        {
+            "type": "string",
+            "id": "subtitle",
+            "label": {
+                "ar": "نص فرعي",
+                "en": "Subtitle"
+            },
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "placeholder": {
+                "ar": "أضف نصاً وصفياً للقسم...",
+                "en": "Add a descriptive text..."
+            }
+        },
+        {
+            "id": "categories",
+            "type": "collection",
+            "format": "collection",
+            "label": {
+                "ar": "الأقسام",
+                "en": "Categories"
+            },
+            "item_label": {
+                "ar": "قسم",
+                "en": "Category"
+            },
+            "minLength": 4,
+            "maxLength": 4,
+            "value": [
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/MopzhoqpTkDObcKc8Q8n77AuydanfsGXdZO7iinH.jpg",
+                    "name": {
+                        "ar": "طعام الحيوانات",
+                        "en": "Pet Food"
+                    },
+                    "description": {
+                        "ar": "أفضل العلامات التجارية لطعام حيواناتك الأليفة",
+                        "en": "Best brands for your pet's food"
+                    },
+                    "link": null,
+                    "products_count": 156
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/3gOhYSaIhaHxhH2IHWxJYDl9JHwxP6dGKiZFSq4K.jpg",
+                    "name": {
+                        "ar": "مستلزمات الكلاب",
+                        "en": "Dog Supplies"
+                    },
+                    "description": {
+                        "ar": "أسرة، ألعاب، وأدوات العناية بالكلاب",
+                        "en": "Beds, toys, and care tools for dogs"
+                    },
+                    "link": null,
+                    "products_count": 89
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/8kH2jHsL9pQrTsV5wNxYzA1bC3dE4fG5hI6jK7lM.jpg",
+                    "name": {
+                        "ar": "مستلزمات القطط",
+                        "en": "Cat Supplies"
+                    },
+                    "description": {
+                        "ar": "ألعاب، أشجار تسلق، ومستلزمات القطط",
+                        "en": "Toys, climbing trees, and cat supplies"
+                    },
+                    "link": null,
+                    "products_count": 124
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/9mNxLkHjGfDcVbNmQwErTyUiOpAsDfGhJkLzXcVb.jpg",
+                    "name": {
+                        "ar": "العناية والصحة",
+                        "en": "Health & Care"
+                    },
+                    "description": {
+                        "ar": "منتجات العناية والصحة لحيواناتك الأليفة",
+                        "en": "Health and care products for your pets"
+                    },
+                    "link": null,
+                    "products_count": 67
+                }
+            ],
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "image",
+                    "label": {
+                        "ar": "صورة القسم",
+                        "en": "Category Image"
+                    },
+                    "format": "image",
+                    "required": true,
+                    "description": {
+                        "ar": "المقاس المناسب: 600×600 بكسل",
+                        "en": "Recommended size: 600×600 px"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "name",
+                    "label": {
+                        "ar": "اسم القسم",
+                        "en": "Category Name"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": true
+                },
+                {
+                    "type": "string",
+                    "id": "description",
+                    "label": {
+                        "ar": "وصف القسم (اختياري)",
+                        "en": "Category Description (Optional)"
+                    },
+                    "format": "textarea",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "items",
+                    "id": "link",
+                    "label": {
+                        "ar": "رابط القسم",
+                        "en": "Category Link"
+                    },
+                    "format": "variable-list",
+                    "required": false,
+                    "source": "custom",
+                    "sources": [
+                        {"label": {"ar": "تصنيف", "en": "Category"}, "key": "categories", "value": "categories"},
+                        {"label": {"ar": "منتج", "en": "Product"}, "key": "products", "value": "products"},
+                        {"label": {"ar": "صفحة", "en": "Page"}, "key": "pages", "value": "pages"},
+                        {"label": {"ar": "رابط خارجي", "en": "Custom URL"}, "key": "custom", "value": "custom"}
+                    ]
+                },
+                {
+                    "type": "number",
+                    "id": "products_count",
+                    "label": {
+                        "ar": "عدد المنتجات (اختياري)",
+                        "en": "Products Count (Optional)"
+                    },
+                    "format": "number",
+                    "required": false
+                }
+            ]
+        },
+        {
+            "type": "boolean",
+            "id": "show_promo",
+            "label": {
+                "ar": "إظهار شريط العروض",
+                "en": "Show Promo Bar"
+            },
+            "format": "switch",
+            "value": false
+        },
+        {
+            "type": "string",
+            "id": "promo_text",
+            "label": {
+                "ar": "نص العرض",
+                "en": "Promo Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "عروض حصرية على جميع الأقسام",
+                "en": "Exclusive offers on all categories"
+            },
+            "conditions": [
+                {
+                    "id": "show_promo",
+                    "operation": "=",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "type": "items",
+            "id": "promo_link",
+            "label": {
+                "ar": "رابط العرض",
+                "en": "Promo Link"
+            },
+            "format": "variable-list",
+            "required": false,
+            "source": "custom",
+            "sources": [
+                {"label": "تصنيف", "key": "categories", "value": "categories"},
+                {"label": "عروض", "key": "offers_link", "value": "offers_link"},
+                {"label": "رابط خارجي", "key": "custom", "value": "custom"}
+            ],
+            "conditions": [
+                {
+                    "id": "show_promo",
+                    "operation": "=",
+                    "value": true
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+/* تأثيرات متقدمة */
+.category-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.category-card:hover::before {
+    opacity: 1;
+}
+
+/* تأثير تكبير الصورة */
+.category-card img {
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-card:hover img {
+    transform: scale(1.1);
+}
+
+/* تأثير النص */
+.category-card .absolute.bottom-0 {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-card:hover .absolute.bottom-0 {
+    transform: translateY(-8px);
+}
+
+/* تأثير عداد المنتجات */
+.category-card .top-4 {
+    transform: translateY(0);
+    transition: transform 0.3s;
+}
+
+.category-card:hover .top-4 {
+    transform: translateY(4px);
+}
+
+/* تجاوب للجوال */
+@media (max-width: 768px) {
+    .category-card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .category-card .p-6 {
+        padding: 1rem;
+    }
+}
+
+/* تأثير نبض خفيف على زر التسوق */
+@keyframes subtlePulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+.category-card:hover a {
+    animation: subtlePulse 2s infinite;
+}
+</style>

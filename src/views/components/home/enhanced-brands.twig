@@ -1,0 +1,310 @@
+{# =============================================================================
+   سكشن: العلامات التجارية المتقدمة (Enhanced Brands)
+   الوصف: عرض العلامات التجارية المتعاونة مع المتجر بتصميم جذاب
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="enhanced-brands-section py-12 md:py-16" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان القسم #}
+        <div class="section-title text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                {{ section.settings.title | default('العلامات التجارية') }}
+            </h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600 max-w-2xl mx-auto">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        {# عرض العلامات حسب النمط المختار #}
+        {% if section.settings.brands | length > 0 %}
+            
+            {% if section.settings.display_style == 'grid' %}
+                {# عرض شبكي #}
+                <div class="brands-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
+                    {% for brand in section.settings.brands %}
+                        <div class="brand-card bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 flex items-center justify-center group cursor-pointer border border-gray-100">
+                            <div class="text-center">
+                                <div class="w-24 h-24 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center p-3 group-hover:scale-110 transition-transform">
+                                    <img src="{{ brand.image | default('https://via.placeholder.com/100x100?text=Brand') }}" 
+                                         alt="{{ brand.title }}"
+                                         class="max-w-full max-h-full object-contain">
+                                </div>
+                                <h3 class="font-medium text-gray-800 group-hover:text-blue-600 transition">{{ brand.title }}</h3>
+                                {% if brand.products_count %}
+                                    <p class="text-xs text-gray-500 mt-1">{{ brand.products_count }} منتج</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+            {% elseif section.settings.display_style == 'slider' %}
+                {# عرض سليدر #}
+                <div class="brands-slider relative">
+                    <div class="swiper" id="brandsSlider-{{ section.id }}">
+                        <div class="swiper-wrapper">
+                            {% for brand in section.settings.brands %}
+                                <div class="swiper-slide">
+                                    <div class="brand-card bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 mx-2 flex items-center justify-center group">
+                                        <div class="text-center">
+                                            <div class="w-20 h-20 mx-auto mb-3 rounded-full bg-gray-50 flex items-center justify-center p-3 group-hover:scale-110 transition-transform">
+                                                <img src="{{ brand.image | default('https://via.placeholder.com/100x100?text=Brand') }}" 
+                                                     alt="{{ brand.title }}"
+                                                     class="max-w-full max-h-full object-contain">
+                                            </div>
+                                            <h3 class="font-medium text-gray-800 group-hover:text-blue-600 transition">{{ brand.title }}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="swiper-button-next !text-blue-600 !bg-white !w-10 !h-10 rounded-full shadow-lg hover:!bg-blue-50 transition after:!text-sm"></div>
+                        <div class="swiper-button-prev !text-blue-600 !bg-white !w-10 !h-10 rounded-full shadow-lg hover:!bg-blue-50 transition after:!text-sm"></div>
+                    </div>
+                </div>
+                
+            {% elseif section.settings.display_style == 'carousel' %}
+                {# عرض كاروسيل مستمر #}
+                <div class="brands-carousel overflow-hidden py-4">
+                    <div class="carousel-track flex animate-carousel hover:pause-animation">
+                        {# تكرار العلامات مرتين للاستمرارية #}
+                        {% for i in 0..1 %}
+                            {% for brand in section.settings.brands %}
+                                <div class="carousel-item flex-shrink-0 mx-4">
+                                    <div class="brand-card bg-white rounded-xl shadow-sm hover:shadow-md transition p-4 w-32 h-32 flex items-center justify-center">
+                                        <img src="{{ brand.image | default('https://via.placeholder.com/80x80?text=Brand') }}" 
+                                             alt="{{ brand.title }}"
+                                             class="max-w-full max-h-full object-contain grayscale hover:grayscale-0 transition">
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+            
+        {% else %}
+            {# رسالة إذا لم توجد علامات تجارية - تظهر فقط للمطور #}
+            {% if is_developer_mode %}
+                <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg text-center">
+                    يرجى إضافة علامات تجارية من إعدادات القسم
+                </div>
+            {% endif %}
+        {% endif %}
+        
+        {# زر عرض الكل #}
+        {% if section.settings.show_view_all %}
+            <div class="text-center mt-10">
+                <a href="/brands" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+                    <span>عرض جميع العلامات التجارية</span>
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "العلامات التجارية المتقدمة",
+        "en": "Enhanced Brands"
+    },
+    "icon": "sicon-award-ribbon",
+    "description": {
+        "ar": "عرض العلامات التجارية المتعاونة مع المتجر بتصميم جذاب",
+        "en": "Display partner brands in an attractive layout"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم",
+                "en": "Section Title"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "العلامات التجارية",
+                "en": "Our Brands"
+            }
+        },
+        {
+            "type": "string",
+            "id": "subtitle",
+            "label": {
+                "ar": "نص فرعي",
+                "en": "Subtitle"
+            },
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "placeholder": {
+                "ar": "أضف نصاً وصفياً للقسم...",
+                "en": "Add a descriptive text..."
+            }
+        },
+        {
+            "type": "select",
+            "id": "display_style",
+            "label": {
+                "ar": "نمط العرض",
+                "en": "Display Style"
+            },
+            "format": "dropdown-list",
+            "options": [
+                {
+                    "label": {
+                        "ar": "شبكة",
+                        "en": "Grid"
+                    },
+                    "value": "grid"
+                },
+                {
+                    "label": {
+                        "ar": "سليدر",
+                        "en": "Slider"
+                    },
+                    "value": "slider"
+                },
+                {
+                    "label": {
+                        "ar": "كاروسيل متحرك",
+                        "en": "Carousel"
+                    },
+                    "value": "carousel"
+                }
+            ],
+            "selected": [
+                {
+                    "value": "grid"
+                }
+            ]
+        },
+        {
+            "type": "items",
+            "id": "brands",
+            "label": {
+                "ar": "اختر العلامات التجارية",
+                "en": "Select Brands"
+            },
+            "format": "dropdown-list",
+            "selected": [],
+            "options": [],
+            "required": true,
+            "multichoice": true,
+            "source": "brands",
+            "searchable": true,
+            "maxLength": 20
+        },
+        {
+            "type": "boolean",
+            "id": "show_view_all",
+            "label": {
+                "ar": "إظهار زر 'عرض الكل'",
+                "en": "Show 'View All' Button"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "boolean",
+            "id": "grayscale",
+            "label": {
+                "ar": "تدرج رمادي (Grayscale)",
+                "en": "Grayscale"
+            },
+            "format": "switch",
+            "value": false,
+            "description": {
+                "ar": "تحويل الصور للأبيض والأسود وتظهر ملونة عند المرور",
+                "en": "Convert images to grayscale and show color on hover"
+            }
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+/* أنيميشن الكاروسيل */
+@keyframes carousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-carousel {
+    animation: carousel 30s linear infinite;
+    width: fit-content;
+}
+
+.pause-animation {
+    animation-play-state: paused;
+}
+
+/* تنسيقات إضافية */
+.brand-card {
+    transition: all 0.3s ease;
+}
+
+.brand-card:hover {
+    transform: translateY(-4px);
+}
+
+/* تأثير التدرج الرمادي */
+{% if section.settings.grayscale %}
+    .brand-card img {
+        filter: grayscale(100%);
+        transition: filter 0.3s ease;
+    }
+    
+    .brand-card:hover img {
+        filter: grayscale(0%);
+    }
+{% endif %}
+
+/* تجاوب السليدر */
+@media (max-width: 768px) {
+    .brands-slider .swiper-button-next,
+    .brands-slider .swiper-button-prev {
+        display: none;
+    }
+}
+</style>
+
+{% if section.settings.display_style == 'slider' %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('#brandsSlider-{{ section.id }}', {
+            slidesPerView: 2,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 3,
+                },
+                768: {
+                    slidesPerView: 4,
+                },
+                1024: {
+                    slidesPerView: 5,
+                }
+            }
+        });
+    }
+});
+</script>
+{% endif %}

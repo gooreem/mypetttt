@@ -1,0 +1,316 @@
+{# =============================================================================
+   سكشن: شبكة منتجات مع فلترة جانبية (Products Grid with Filter)
+   الوصف: يعرض منتجات في شبكة مع إمكانية الفلترة حسب الفئة أو السعر.
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="products-filter-section py-12 bg-gray-50" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان السكشن #}
+        <div class="section-title text-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">{{ section.settings.title | default('تسوق حسب الفئة') }}</h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-wrap -mx-4">
+            {# =========================================================================
+               الجزء الجانبي: خيارات الفلترة (يظهر فقط في الكمبيوتر)
+               ========================================================================= #}
+            <div class="hidden lg:block lg:w-1/4 px-4">
+                <div class="filter-sidebar bg-white rounded-lg shadow-sm p-6 sticky top-24">
+                    <h3 class="font-bold text-lg mb-4 pb-2 border-b border-gray-200">تصفية حسب</h3>
+                    
+                    {# فلترة حسب الفئة (مثال ثابت - يمكن ربطه ببيانات حقيقية لاحقاً) #}
+                    <div class="filter-categories mb-6">
+                        <h4 class="font-medium text-gray-700 mb-2">الفئة</h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                                    <span class="mr-2 text-gray-600">إلكترونيات</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                                    <span class="mr-2 text-gray-600">ملابس</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                                    <span class="mr-2 text-gray-600">أحذية</span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300">
+                                    <span class="mr-2 text-gray-600">إكسسوارات</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    {# فلترة حسب السعر #}
+                    <div class="filter-price mb-6">
+                        <h4 class="font-medium text-gray-700 mb-2">السعر</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="price" class="form-radio h-4 w-4 text-blue-600 border-gray-300">
+                                <span class="mr-2 text-gray-600">أقل من 50 ريال</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="price" class="form-radio h-4 w-4 text-blue-600 border-gray-300">
+                                <span class="mr-2 text-gray-600">50 - 100 ريال</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="price" class="form-radio h-4 w-4 text-blue-600 border-gray-300">
+                                <span class="mr-2 text-gray-600">100 - 200 ريال</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="price" class="form-radio h-4 w-4 text-blue-600 border-gray-300">
+                                <span class="mr-2 text-gray-600">أكثر من 200 ريال</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    {# زر تطبيق الفلترة #}
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200">
+                        تطبيق الفلترة
+                    </button>
+                </div>
+            </div>
+            
+            {# =========================================================================
+               الجزء الرئيسي: شبكة المنتجات
+               ========================================================================= #}
+            <div class="w-full lg:w-3/4 px-4">
+                {# شريط الفلترة للجوال (يظهر فقط تحت عرض lg) #}
+                <div class="lg:hidden mb-4">
+                    <button class="mobile-filter-toggle w-full bg-white border border-gray-300 rounded-lg py-2 px-4 text-gray-700 flex items-center justify-between">
+                        <span>تصفية المنتجات</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                {# شريط ترتيب المنتجات #}
+                <div class="sorting-bar bg-white rounded-lg shadow-sm p-4 mb-6 flex flex-wrap items-center justify-between">
+                    <div class="text-gray-600">
+                        عرض <span class="font-bold">12</span> من أصل <span class="font-bold">48</span> منتج
+                    </div>
+                    <div class="sort-select">
+                        <select class="border border-gray-300 rounded-lg py-2 px-4 bg-white text-gray-700 focus:outline-none focus:border-blue-500">
+                            <option>الترتيب: الافتراضي</option>
+                            <option>الأحدث</option>
+                            <option>الأعلى سعراً</option>
+                            <option>الأقل سعراً</option>
+                            <option>الأكثر مبيعاً</option>
+                        </select>
+                    </div>
+                </div>
+                
+                {# شبكة المنتجات - هنا نستخدم كروت المنتجات الموجودة في ثيم رائد #}
+                <div class="products-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+                    
+                    {# مثال: منتج 1 #}
+                    <div class="product-card bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                        <div class="product-image relative pt-[100%] bg-gray-100">
+                            <img src="{{ 'assets/images/product-1.jpg' | asset_url }}" alt="منتج 1" class="absolute inset-0 w-full h-full object-cover">
+                            {% if section.settings.show_sale_badge %}
+                                <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">خصم 20%</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-info p-3">
+                            <h3 class="product-title text-sm md:text-base font-medium text-gray-800 mb-1 line-clamp-2">منتج تجريبي 1</h3>
+                            <div class="product-price">
+                                <span class="text-lg font-bold text-blue-600">99 ريال</span>
+                                {% if section.settings.show_old_price %}
+                                    <span class="text-sm text-gray-400 line-through mr-2">129 ريال</span>
+                                {% endif %}
+                            </div>
+                            {% if section.settings.show_rating %}
+                                <div class="product-rating flex items-center mt-1">
+                                    <div class="stars flex text-yellow-400">
+                                        ★★★★★
+                                    </div>
+                                    <span class="text-xs text-gray-500 mr-1">(12)</span>
+                                </div>
+                            {% endif %}
+                            <button class="add-to-cart-btn w-full mt-3 bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-800 font-medium py-2 px-3 rounded-lg text-sm transition-colors duration-200">
+                                أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    {# منتج 2 - يمكن تكرار هذا النمط أو استخدام حلقة for مع بيانات حقيقية #}
+                    <div class="product-card bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                        <div class="product-image relative pt-[100%] bg-gray-100">
+                            <img src="{{ 'assets/images/product-2.jpg' | asset_url }}" alt="منتج 2" class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+                        <div class="product-info p-3">
+                            <h3 class="product-title text-sm md:text-base font-medium text-gray-800 mb-1 line-clamp-2">منتج تجريبي 2</h3>
+                            <div class="product-price">
+                                <span class="text-lg font-bold text-blue-600">149 ريال</span>
+                            </div>
+                            {% if section.settings.show_rating %}
+                                <div class="product-rating flex items-center mt-1">
+                                    <div class="stars flex text-yellow-400">
+                                        ★★★★☆
+                                    </div>
+                                    <span class="text-xs text-gray-500 mr-1">(8)</span>
+                                </div>
+                            {% endif %}
+                            <button class="add-to-cart-btn w-full mt-3 bg-gray-100 hover:bg-blue-600 hover:text-white text-gray-800 font-medium py-2 px-3 rounded-lg text-sm transition-colors duration-200">
+                                أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    {# ... المزيد من المنتجات يمكن إضافتها هنا أو استخدام حلقة for #}
+                    
+                </div>
+                
+                {# أزرار التصفح بين الصفحات (Pagination) #}
+                <div class="pagination flex justify-center mt-8">
+                    <nav class="flex items-center space-x-2 space-x-reverse" aria-label="Pagination">
+                        <a href="#" class="px-3 py-2 bg-gray-100 text-gray-500 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </a>
+                        <a href="#" class="px-4 py-2 bg-blue-600 text-white rounded-lg">1</a>
+                        <a href="#" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-200">2</a>
+                        <a href="#" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-200">3</a>
+                        <span class="px-4 py-2 text-gray-500">...</span>
+                        <a href="#" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-200">10</a>
+                        <a href="#" class="px-3 py-2 bg-gray-100 text-gray-500 rounded-lg hover:bg-blue-600 hover:text-white transition-colors duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {# =========================================================================
+       مودال الفلترة للجوال (يظهر عند الضغط على زر التصفية)
+       ========================================================================= #}
+    <div class="mobile-filter-modal fixed inset-0 bg-black bg-opacity-50 z-50 hidden lg:hidden" id="mobileFilterModal">
+        <div class="absolute left-0 top-0 h-full w-4/5 max-w-sm bg-white overflow-y-auto">
+            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="font-bold text-lg">تصفية المنتجات</h3>
+                <button class="close-filter-modal text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-4">
+                {# هنا نفس محتوى الفلترة الجانبية #}
+                <div class="filter-categories mb-6">
+                    <h4 class="font-medium text-gray-700 mb-2">الفئة</h4>
+                    <ul class="space-y-2">
+                        <li><label class="flex items-center"><input type="checkbox" class="form-checkbox"><span class="mr-2">إلكترونيات</span></label></li>
+                        <li><label class="flex items-center"><input type="checkbox" class="form-checkbox"><span class="mr-2">ملابس</span></label></li>
+                        <li><label class="flex items-center"><input type="checkbox" class="form-checkbox"><span class="mr-2">أحذية</span></label></li>
+                    </ul>
+                </div>
+                <div class="filter-price mb-6">
+                    <h4 class="font-medium text-gray-700 mb-2">السعر</h4>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="radio" name="mobile-price" class="form-radio"><span class="mr-2">أقل من 50 ريال</span></label>
+                        <label class="flex items-center"><input type="radio" name="mobile-price" class="form-radio"><span class="mr-2">50 - 100 ريال</span></label>
+                    </div>
+                </div>
+                <button class="w-full bg-blue-600 text-white py-3 rounded-lg">تطبيق الفلترة</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": "شبكة منتجات مع فلترة",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "عنوان السكشن",
+            "default": "تسوق حسب الفئة"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "نص فرعي",
+            "default": "اختر من بين أفضل منتجاتنا"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_sale_badge",
+            "label": "إظهار شارة التخفيض",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_old_price",
+            "label": "إظهار السعر القديم",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_rating",
+            "label": "إظهار التقييمات",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "products_per_row",
+            "label": "عدد المنتجات في الصف",
+            "options": [
+                { "value": "2", "label": "2 منتجات" },
+                { "value": "3", "label": "3 منتجات" },
+                { "value": "4", "label": "4 منتجات" },
+                { "value": "6", "label": "6 منتجات" }
+            ],
+            "default": "4"
+        }
+    ]
+}
+{% endschema %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // تفعيل مودال الفلترة للجوال
+    const mobileFilterBtn = document.querySelector('.mobile-filter-toggle');
+    const filterModal = document.getElementById('mobileFilterModal');
+    const closeModalBtn = document.querySelector('.close-filter-modal');
+    
+    if (mobileFilterBtn && filterModal) {
+        mobileFilterBtn.addEventListener('click', function() {
+            filterModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // منع التمرير خلف المودال
+        });
+        
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', function() {
+                filterModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        // إغلاق المودال عند الضغط على الخلفية
+        filterModal.addEventListener('click', function(e) {
+            if (e.target === filterModal) {
+                filterModal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+});
+</script>

@@ -1,0 +1,236 @@
+/* ========================================
+   ثيم mypetttt - ملف الأنماط الرئيسي
+   ======================================== */
+
+/* استيراد خطوط Google (اختياري) */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
+
+/* ========================================
+   المتغيرات العامة
+   ======================================== */
+:root {
+    --primary-color: #21636d;
+    --primary-dark: #1a4f57;
+    --secondary-color: #3b82f6;
+    --text-dark: #1f2937;
+    --text-gray: #6b7280;
+    --bg-light: #f9fafb;
+    --white: #ffffff;
+    --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+}
+
+/* ========================================
+   الأنماط العامة
+   ======================================== */
+body {
+    font-family: 'Cairo', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* ========================================
+   سكشن 0: شبكة منتجات مع فلترة
+   ======================================== */
+.products-filter-section .filter-sidebar {
+    position: sticky;
+    top: 2rem;
+}
+
+/* ========================================
+   سكشن 1: سليدر متجاوب
+   ======================================== */
+.responsive-slider-section .swiper-button-next,
+.responsive-slider-section .swiper-button-prev {
+    background: rgba(255,255,255,0.9);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   سكشن 2: بانر أفقي
+   ======================================== */
+.horizontal-banner-section picture img {
+    transition: transform 0.7s var(--transition);
+}
+
+.horizontal-banner-section:hover picture img {
+    transform: scale(1.05);
+}
+
+/* ========================================
+   سكشن 3: شريط متحرك
+   ======================================== */
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.marquee-wrapper {
+    animation: marquee linear infinite;
+}
+
+/* ========================================
+   سكشن 4: المدونة
+   ======================================== */
+.blog-card {
+    transition: var(--transition);
+}
+
+.blog-card:hover {
+    transform: translateY(-4px);
+}
+
+/* ========================================
+   سكشن 5: بانرين وفيديو
+   ======================================== */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* نسبة 16:9 */
+    height: 0;
+    overflow: hidden;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ========================================
+   سكشن 6: تقييمات متقدمة
+   ======================================== */
+.testimonial-card {
+    transition: var(--transition);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ========================================
+   سكشن 7: علامات تجارية محسنة
+   ======================================== */
+.brand-card {
+    transition: var(--transition);
+}
+
+.brand-card:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* ========================================
+   سكشن 8: مميزات مع صور
+   ======================================== */
+.feature-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.feature-card:hover::after {
+    left: 100%;
+}
+
+/* ========================================
+   سكشن 9: منتجات متحركة (الأفضل مبيعاً)
+   ======================================== */
+.best-selling-slider .product-card {
+    transition: var(--transition);
+}
+
+.best-selling-slider .product-card:hover {
+    transform: translateY(-4px);
+}
+
+/* ========================================
+   سكشن 10: أربع أقسام
+   ======================================== */
+.category-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card .overlay {
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+}
+
+/* ========================================
+   سكشن 11: 8 أقسام فرعية
+   ======================================== */
+.subcategory-card {
+    transition: var(--transition);
+}
+
+.subcategory-card:hover {
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   سكشن 12: 6 منتجات حديثة
+   ======================================== */
+.new-products-grid-6-section .product-card {
+    transition: var(--transition);
+}
+
+.new-products-grid-6-section .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ========================================
+   أنماط مساعدة
+   ======================================== */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ========================================
+   تجاوب للجوال
+   ======================================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    .product-card .text-2xl {
+        font-size: 1.1rem;
+    }
+}

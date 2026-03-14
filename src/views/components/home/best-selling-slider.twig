@@ -1,0 +1,527 @@
+{# =============================================================================
+   سكشن: المنتجات الأكثر مبيعاً (Best Selling Slider)
+   الوصف: عرض المنتجات الأكثر مبيعاً في سليدر متحرك مع تأثيرات احترافية
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="best-selling-slider-section py-16 md:py-20 bg-gradient-to-b from-white to-gray-50" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان القسم مع عداد المنتجات #}
+        <div class="section-title text-center mb-12">
+            <span class="inline-block text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">
+                {{ section.settings.badge_text | default('الأكثر طلباً') }}
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                {{ section.settings.title | default('الأكثر مبيعاً') }}
+            </h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        {# سليدر المنتجات #}
+        <div class="best-selling-slider relative">
+            <div class="swiper" id="bestSellingSlider-{{ section.id }}" dir="ltr">
+                <div class="swiper-wrapper">
+                    
+                    {# هنا في المشروع الحقيقي ستجلب المنتجات من قاعدة البيانات #}
+                    {# للعرض التجريبي، نستخدم منتجات تجريبية #}
+                    {% set products = [
+                        {
+                            id: 1,
+                            name: "طعام القطط الفاخر",
+                            price: 89,
+                            old_price: 120,
+                            image: "https://cdn.salla.sa/ZrBEO/MopzhoqpTkDObcKc8Q8n77AuydanfsGXdZO7iinH.jpg",
+                            rating: 4.5,
+                            reviews: 23,
+                            sold_count: 150,
+                            badge: "الأكثر مبيعاً",
+                            discount: 26
+                        },
+                        {
+                            id: 2,
+                            name: "سرير الكلاب الفخم",
+                            price: 199,
+                            old_price: 250,
+                            image: "https://cdn.salla.sa/ZrBEO/3gOhYSaIhaHxhH2IHWxJYDl9JHwxP6dGKiZFSq4K.jpg",
+                            rating: 5,
+                            reviews: 45,
+                            sold_count: 89,
+                            badge: "تخفيض",
+                            discount: 20
+                        },
+                        {
+                            id: 3,
+                            name: "لعبة التفاعل للقطط",
+                            price: 45,
+                            old_price: null,
+                            image: "https://cdn.salla.sa/ZrBEO/8kH2jHsL9pQrTsV5wNxYzA1bC3dE4fG5hI6jK7lM.jpg",
+                            rating: 4,
+                            reviews: 12,
+                            sold_count: 234,
+                            badge: "وصل حديثاً",
+                            discount: 0
+                        },
+                        {
+                            id: 4,
+                            name: "شامبو للكلاب (طبيعي)",
+                            price: 65,
+                            old_price: 85,
+                            image: "https://cdn.salla.sa/ZrBEO/9mNxLkHjGfDcVbNmQwErTyUiOpAsDfGhJkLzXcVb.jpg",
+                            rating: 4.5,
+                            reviews: 67,
+                            sold_count: 432,
+                            badge: "الأكثر مبيعاً",
+                            discount: 24
+                        },
+                        {
+                            id: 5,
+                            name: "منزل للقطط متعدد الطوابق",
+                            price: 350,
+                            old_price: 450,
+                            image: "https://cdn.salla.sa/ZrBEO/2aSdFgHjKlQwErTyUiOpZxCvBnMqWeRtYuIoPa.jpg",
+                            rating: 5,
+                            reviews: 34,
+                            sold_count: 56,
+                            badge: "تخفيض",
+                            discount: 22
+                        },
+                        {
+                            id: 6,
+                            name: "حقيبة سفر للحيوانات",
+                            price: 129,
+                            old_price: 160,
+                            image: "https://cdn.salla.sa/ZrBEO/5lKjHgFdSaPpOoIiUuYtRrEeWwQqZzXcVvBbNn.jpg",
+                            rating: 4,
+                            reviews: 19,
+                            sold_count: 78,
+                            badge: "شحن مجاني",
+                            discount: 19
+                        }
+                    ] %}
+                    
+                    {% for product in products %}
+                        <div class="swiper-slide">
+                            <div class="product-card bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group h-full">
+                                {# صورة المنتج #}
+                                <div class="product-image relative pt-[100%] bg-gray-100 overflow-hidden">
+                                    <img src="{{ product.image }}" 
+                                         alt="{{ product.name }}"
+                                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                    
+                                    {# شارة التخفيض أو البادج #}
+                                    {% if product.discount > 0 %}
+                                        <span class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1.5 rounded-full z-10">
+                                            -{{ product.discount }}%
+                                        </span>
+                                    {% endif %}
+                                    
+                                    {% if product.badge %}
+                                        <span class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1.5 rounded-full z-10">
+                                            {{ product.badge }}
+                                        </span>
+                                    {% endif %}
+                                    
+                                    {# أيقونات سريعة #}
+                                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                        <button class="quick-view-btn w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-800 hover:bg-blue-600 hover:text-white transition transform translate-y-4 group-hover:translate-y-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </button>
+                                        <button class="add-to-cart-btn w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-800 hover:bg-blue-600 hover:text-white transition transform translate-y-4 group-hover:translate-y-0 delay-75">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                {# معلومات المنتج #}
+                                <div class="product-info p-4">
+                                    <h3 class="font-bold text-gray-900 mb-1 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                                        <a href="#">{{ product.name }}</a>
+                                    </h3>
+                                    
+                                    {# التقييم #}
+                                    {% if section.settings.show_rating %}
+                                        <div class="flex items-center mb-2">
+                                            <div class="flex text-yellow-400">
+                                                {% set rating = product.rating %}
+                                                {% for i in 1..5 %}
+                                                    {% if i <= rating %}
+                                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                        </svg>
+                                                    {% else %}
+                                                        <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                        </svg>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <span class="text-xs text-gray-500 mr-2">({{ product.reviews }})</span>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {# السعر #}
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <span class="text-xl font-bold text-blue-600">{{ product.price }} ريال</span>
+                                            {% if product.old_price and section.settings.show_old_price %}
+                                                <span class="text-sm text-gray-400 line-through mr-2">{{ product.old_price }} ريال</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        {# عدد المبيعات #}
+                                        {% if section.settings.show_sold_count %}
+                                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                                {{ product.sold_count }} مبيعات
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    {# شريط التقدم للمبيعات (اختياري) #}
+                                    {% if section.settings.show_progress_bar %}
+                                        <div class="mt-3">
+                                            <div class="flex justify-between text-xs text-gray-600 mb-1">
+                                                <span>تبقى {{ 100 - product.sold_count }} قطعة</span>
+                                                <span>مباع {{ product.sold_count }}</span>
+                                            </div>
+                                            <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                                <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ min(product.sold_count, 100) }}%"></div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                {# زر الإضافة السريعة #}
+                                <div class="p-4 pt-0">
+                                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-all transform hover:scale-[1.02] active:scale-95">
+                                        أضف للسلة
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                {# أزرار التنقل #}
+                <div class="swiper-button-next !bg-white !w-12 !h-12 rounded-full shadow-lg hover:!bg-blue-600 hover:!text-white transition after:!text-base !text-blue-600 opacity-0 group-hover:opacity-100"></div>
+                <div class="swiper-button-prev !bg-white !w-12 !h-12 rounded-full shadow-lg hover:!bg-blue-600 hover:!text-white transition after:!text-base !text-blue-600 opacity-0 group-hover:opacity-100"></div>
+                
+                {# نقاط التصفح #}
+                <div class="swiper-pagination !relative !bottom-0 mt-8"></div>
+            </div>
+        </div>
+        
+        {# رابط عرض الكل #}
+        {% if section.settings.show_view_all %}
+            <div class="text-center mt-10">
+                <a href="/collections/best-selling" class="inline-flex items-center bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+                    <span>عرض جميع المنتجات</span>
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "المنتجات الأكثر مبيعاً",
+        "en": "Best Selling Products"
+    },
+    "icon": "sicon-list-play",
+    "description": {
+        "ar": "عرض المنتجات الأكثر مبيعاً في سليدر متحرك",
+        "en": "Display best selling products in a moving slider"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "badge_text",
+            "label": {
+                "ar": "نص الشارة",
+                "en": "Badge Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "الأكثر طلباً",
+                "en": "Most Wanted"
+            }
+        },
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم",
+                "en": "Section Title"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "الأكثر مبيعاً",
+                "en": "Best Selling"
+            }
+        },
+        {
+            "type": "string",
+            "id": "subtitle",
+            "label": {
+                "ar": "نص فرعي",
+                "en": "Subtitle"
+            },
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "placeholder": {
+                "ar": "أضف نصاً وصفياً للقسم...",
+                "en": "Add a descriptive text..."
+            }
+        },
+        {
+            "type": "number",
+            "id": "products_count",
+            "label": {
+                "ar": "عدد المنتجات",
+                "en": "Number of Products"
+            },
+            "format": "number",
+            "value": 8,
+            "minimum": 4,
+            "maximum": 20
+        },
+        {
+            "type": "select",
+            "id": "products_per_slide",
+            "label": {
+                "ar": "منتجات في كل شريحة",
+                "en": "Products Per Slide"
+            },
+            "format": "dropdown-list",
+            "options": [
+                {"label": {"ar": "منتجين", "en": "2 Products"}, "value": "2"},
+                {"label": {"ar": "3 منتجات", "en": "3 Products"}, "value": "3"},
+                {"label": {"ar": "4 منتجات", "en": "4 Products"}, "value": "4"},
+                {"label": {"ar": "5 منتجات", "en": "5 Products"}, "value": "5"},
+                {"label": {"ar": "6 منتجات", "en": "6 Products"}, "value": "6"}
+            ],
+            "selected": [{"value": "4"}],
+            "required": true
+        },
+        {
+            "type": "boolean",
+            "id": "show_old_price",
+            "label": {
+                "ar": "إظهار السعر القديم",
+                "en": "Show Old Price"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "boolean",
+            "id": "show_rating",
+            "label": {
+                "ar": "إظهار التقييمات",
+                "en": "Show Ratings"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "boolean",
+            "id": "show_sold_count",
+            "label": {
+                "ar": "إظهار عدد المبيعات",
+                "en": "Show Sold Count"
+            },
+            "format": "switch",
+            "value": false
+        },
+        {
+            "type": "boolean",
+            "id": "show_progress_bar",
+            "label": {
+                "ar": "إظهار شريط التقدم",
+                "en": "Show Progress Bar"
+            },
+            "format": "switch",
+            "value": false
+        },
+        {
+            "type": "boolean",
+            "id": "show_view_all",
+            "label": {
+                "ar": "إظهار رابط عرض الكل",
+                "en": "Show View All Link"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "boolean",
+            "id": "autoplay",
+            "label": {
+                "ar": "تشغيل تلقائي",
+                "en": "Autoplay"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "number",
+            "id": "autoplay_speed",
+            "label": {
+                "ar": "سرعة التشغيل (بالثواني)",
+                "en": "Autoplay Speed (seconds)"
+            },
+            "format": "number",
+            "value": 4,
+            "minimum": 2,
+            "maximum": 10,
+            "conditions": [
+                {
+                    "id": "autoplay",
+                    "operation": "=",
+                    "value": true
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+/* تنسيقات متقدمة للسليدر */
+.best-selling-slider {
+    position: relative;
+}
+
+.best-selling-slider .swiper-button-next,
+.best-selling-slider .swiper-button-prev {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+    transition: all 0.3s;
+}
+
+.best-selling-slider:hover .swiper-button-next,
+.best-selling-slider:hover .swiper-button-prev {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* تنسيق المنتج */
+.product-card {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+}
+
+/* تنسيق أيقونات الإجراءات السريعة */
+.quick-view-btn,
+.add-to-cart-btn {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.product-card:hover .quick-view-btn,
+.product-card:hover .add-to-cart-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* تنسيق شريط التقدم */
+.progress-bar {
+    transition: width 1s ease;
+}
+
+/* تجاوب للجوال */
+@media (max-width: 768px) {
+    .best-selling-slider .swiper-button-next,
+    .best-selling-slider .swiper-button-prev {
+        display: none;
+    }
+    
+    .product-card .quick-view-btn,
+    .product-card .add-to-cart-btn {
+        opacity: 1;
+        transform: translateY(0);
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* أنيميشن للسعر */
+@keyframes pricePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.product-card:hover .text-blue-600 {
+    animation: pricePop 0.3s ease;
+}
+
+/* حد للنصوص الطويلة */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('#bestSellingSlider-{{ section.id }}', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            {% if section.settings.autoplay %}
+            autoplay: {
+                delay: {{ section.settings.autoplay_speed | default(4) * 1000 }},
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            {% endif %}
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: {{ section.settings.products_per_slide | default(2) }},
+                },
+                768: {
+                    slidesPerView: {{ section.settings.products_per_slide | default(3) }},
+                },
+                1024: {
+                    slidesPerView: {{ section.settings.products_per_slide | default(4) }},
+                }
+            }
+        });
+    }
+});
+</script>

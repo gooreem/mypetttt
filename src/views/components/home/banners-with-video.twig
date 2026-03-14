@@ -1,0 +1,320 @@
+{# =============================================================================
+   سكشن: بانرين وفيديو (2 Banners + Video)
+   الوصف: يعرض بانرين على الجانبين وفيديو في المنتصف
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="banners-with-video-section py-12 md:py-16" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row gap-4 md:gap-6">
+            
+            {# =========================================================================
+               البانر الأيسر
+               ========================================================================= #}
+            <div class="lg:w-1/4">
+                {% if section.settings.left_banner.image %}
+                    <div class="relative rounded-2xl overflow-hidden group cursor-pointer h-full"
+                         onclick="window.location='{{ section.settings.left_banner.link | default('javascript:void(0)') }}'">
+                        
+                        <img src="{{ section.settings.left_banner.image }}" 
+                             alt="{{ section.settings.left_banner.title | default('Banner') }}"
+                             class="w-full h-full min-h-[250px] object-cover transition-transform duration-700 group-hover:scale-105">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        
+                        {% if section.settings.left_banner.title %}
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                <h3 class="text-xl md:text-2xl font-bold">{{ section.settings.left_banner.title }}</h3>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            {# =========================================================================
+               الفيديو في المنتصف
+               ========================================================================= #}
+            <div class="lg:w-1/2">
+                <div class="video-container relative rounded-2xl overflow-hidden bg-gray-900 aspect-video group">
+                    {% if section.settings.center_video.video_url %}
+                        {# صورة الغلاف #}
+                        {% if section.settings.center_video.poster %}
+                            <img src="{{ section.settings.center_video.poster }}" 
+                                 alt="Video thumbnail"
+                                 class="w-full h-full object-cover absolute inset-0 z-0 transition-opacity duration-500 group-hover:opacity-80"
+                                 id="video-poster-{{ section.id }}">
+                        {% endif %}
+                        
+                        {# زر التشغيل #}
+                        <button class="play-video-btn absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 
+                                       bg-red-600 hover:bg-red-700 text-white w-16 h-16 md:w-20 md:h-20 rounded-full 
+                                       flex items-center justify-center transition-all hover:scale-110 shadow-xl"
+                                data-video-id="{{ section.settings.center_video.video_url | split('v=') | last | split('&') | first }}">
+                            <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </button>
+                        
+                        {# إذا تم الضغط على زر التشغيل، يتم استبدال الصورة بالفيديو #}
+                        <div class="video-player absolute inset-0 z-10 hidden" id="video-player-{{ section.id }}">
+                            <iframe class="w-full h-full"
+                                    src=""
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen>
+                            </iframe>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {# =========================================================================
+               البانر الأيمن
+               ========================================================================= #}
+            <div class="lg:w-1/4">
+                {% if section.settings.right_banner.image %}
+                    <div class="relative rounded-2xl overflow-hidden group cursor-pointer h-full"
+                         onclick="window.location='{{ section.settings.right_banner.link | default('javascript:void(0)') }}'">
+                        
+                        <img src="{{ section.settings.right_banner.image }}" 
+                             alt="{{ section.settings.right_banner.title | default('Banner') }}"
+                             class="w-full h-full min-h-[250px] object-cover transition-transform duration-700 group-hover:scale-105">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                        
+                        {% if section.settings.right_banner.title %}
+                            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                                <h3 class="text-xl md:text-2xl font-bold">{{ section.settings.right_banner.title }}</h3>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "بانرين وفيديو",
+        "en": "2 Banners + Video"
+    },
+    "icon": "sicon-video",
+    "description": {
+        "ar": "يعرض بانرين على الجانبين وفيديو يوتيوب في المنتصف",
+        "en": "Display two banners and a YouTube video in the middle"
+    },
+    "settings": [
+        {
+            "id": "left_banner",
+            "type": "group",
+            "format": "group",
+            "label": {
+                "ar": "البانر الأيسر",
+                "en": "Left Banner"
+            },
+            "value": {
+                "image": null,
+                "link": null,
+                "title": null
+            },
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "image",
+                    "label": {
+                        "ar": "صورة البانر",
+                        "en": "Banner Image"
+                    },
+                    "format": "image",
+                    "required": true,
+                    "description": {
+                        "ar": "المقاس المناسب: 400×600 بكسل",
+                        "en": "Recommended size: 400×600 px"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "title",
+                    "label": {
+                        "ar": "نص على البانر",
+                        "en": "Banner Text"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "items",
+                    "id": "link",
+                    "label": {
+                        "ar": "الرابط",
+                        "en": "Link"
+                    },
+                    "format": "variable-list",
+                    "required": false,
+                    "source": "custom",
+                    "sources": [
+                        {"label": "منتج", "key": "products", "value": "products"},
+                        {"label": "تصنيف", "key": "categories", "value": "categories"},
+                        {"label": "رابط خارجي", "key": "custom", "value": "custom"}
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "center_video",
+            "type": "group",
+            "format": "group",
+            "label": {
+                "ar": "الفيديو",
+                "en": "Video"
+            },
+            "value": {
+                "video_url": null,
+                "poster": null
+            },
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "video_url",
+                    "label": {
+                        "ar": "رابط الفيديو (YouTube)",
+                        "en": "Video URL (YouTube)"
+                    },
+                    "format": "text",
+                    "required": true,
+                    "placeholder": "https://www.youtube.com/watch?v=..."
+                },
+                {
+                    "type": "string",
+                    "id": "poster",
+                    "label": {
+                        "ar": "صورة الغلاف",
+                        "en": "Poster Image"
+                    },
+                    "format": "image",
+                    "required": false,
+                    "description": {
+                        "ar": "صورة تظهر قبل تشغيل الفيديو (يفضل 800×450 بكسل)",
+                        "en": "Image shown before video plays (recommended 800×450 px)"
+                    }
+                }
+            ]
+        },
+        {
+            "id": "right_banner",
+            "type": "group",
+            "format": "group",
+            "label": {
+                "ar": "البانر الأيمن",
+                "en": "Right Banner"
+            },
+            "value": {
+                "image": null,
+                "link": null,
+                "title": null
+            },
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "image",
+                    "label": {
+                        "ar": "صورة البانر",
+                        "en": "Banner Image"
+                    },
+                    "format": "image",
+                    "required": true,
+                    "description": {
+                        "ar": "المقاس المناسب: 400×600 بكسل",
+                        "en": "Recommended size: 400×600 px"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "title",
+                    "label": {
+                        "ar": "نص على البانر",
+                        "en": "Banner Text"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "items",
+                    "id": "link",
+                    "label": {
+                        "ar": "الرابط",
+                        "en": "Link"
+                    },
+                    "format": "variable-list",
+                    "required": false,
+                    "source": "custom",
+                    "sources": [
+                        {"label": "منتج", "key": "products", "value": "products"},
+                        {"label": "تصنيف", "key": "categories", "value": "categories"},
+                        {"label": "رابط خارجي", "key": "custom", "value": "custom"}
+                    ]
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const playBtn = document.querySelector('.play-video-btn');
+    
+    if (playBtn) {
+        playBtn.addEventListener('click', function() {
+            const videoId = this.dataset.videoId;
+            const videoContainer = this.closest('.video-container');
+            const poster = videoContainer.querySelector('img');
+            const videoPlayer = videoContainer.querySelector('.video-player');
+            const iframe = videoPlayer.querySelector('iframe');
+            
+            // إخفاء الصورة وزر التشغيل
+            if (poster) poster.style.display = 'none';
+            this.style.display = 'none';
+            
+            // إظهار الفيديو وتشغيله
+            videoPlayer.classList.remove('hidden');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        });
+    }
+});
+</script>
+
+<style>
+.video-container {
+    position: relative;
+    background: #000;
+}
+
+.play-video-btn {
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.video-player iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* تجاوب للجوال */
+@media (max-width: 1024px) {
+    .banners-with-video-section .flex-col > div {
+        margin-bottom: 1rem;
+    }
+    
+    .banners-with-video-section .min-h-[250px] {
+        min-height: 200px;
+    }
+}
+</style>

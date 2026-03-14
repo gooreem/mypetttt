@@ -1,0 +1,194 @@
+{# =============================================================================
+   سكشن: شريط متحرك (Marquee Bar)
+   الوصف: شريط متحرك يعرض رسائل تسويقية بشكل مستمر
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="marquee-bar-section overflow-hidden" 
+         dir="{{ direction }}"
+         style="background-color: {{ section.settings.background_color | default('#21636d') }}; color: {{ section.settings.text_color | default('#ffffff') }};">
+    
+    <div class="marquee-container py-3 md:py-4">
+        <div class="marquee-wrapper flex whitespace-nowrap" 
+             style="animation-duration: {{ section.settings.speed | default(30) }}s;">
+            
+            {# تكرار الرسائل لضمان الاستمرارية #}
+            {% for i in 0..5 %}
+                {% for message in section.settings.messages %}
+                    <div class="marquee-item inline-flex items-center mx-4 md:mx-6">
+                        {% if section.settings.show_icon %}
+                            <span class="ml-2 text-lg">✦</span>
+                        {% endif %}
+                        <span class="text-sm md:text-base font-medium">{{ message.text }}</span>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "شريط متحرك",
+        "en": "Marquee Bar"
+    },
+    "icon": "sicon-move-horizontal",
+    "description": {
+        "ar": "شريط متحرك يعرض رسائل تسويقية بشكل مستمر",
+        "en": "Moving bar that displays promotional messages"
+    },
+    "settings": [
+        {
+            "id": "messages",
+            "type": "collection",
+            "format": "collection",
+            "required": true,
+            "minLength": 1,
+            "maxLength": 20,
+            "label": {
+                "ar": "الرسائل",
+                "en": "Messages"
+            },
+            "item_label": {
+                "ar": "رسالة",
+                "en": "Message"
+            },
+            "value": [
+                {
+                    "text": {
+                        "ar": "توصيل مجاني للطلبات فوق 200 ريال",
+                        "en": "Free shipping for orders above 200 SAR"
+                    }
+                },
+                {
+                    "text": {
+                        "ar": "خصم 20% على أول طلب",
+                        "en": "20% off on your first order"
+                    }
+                },
+                {
+                    "text": {
+                        "ar": "تسوق الآن واستفد من العروض",
+                        "en": "Shop now and enjoy offers"
+                    }
+                }
+            ],
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "text",
+                    "label": {
+                        "ar": "نص الرسالة",
+                        "en": "Message Text"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": true,
+                    "placeholder": {
+                        "ar": "أدخل النص الذي سيعرض في الشريط...",
+                        "en": "Enter message text..."
+                    }
+                }
+            ]
+        },
+        {
+            "type": "string",
+            "id": "background_color",
+            "label": {
+                "ar": "لون الخلفية",
+                "en": "Background Color"
+            },
+            "format": "color",
+            "value": "#21636d"
+        },
+        {
+            "type": "string",
+            "id": "text_color",
+            "label": {
+                "ar": "لون النص",
+                "en": "Text Color"
+            },
+            "format": "color",
+            "value": "#ffffff"
+        },
+        {
+            "type": "number",
+            "id": "speed",
+            "label": {
+                "ar": "سرعة الحركة",
+                "en": "Speed"
+            },
+            "format": "number",
+            "value": 30,
+            "minimum": 10,
+            "maximum": 100,
+            "description": {
+                "ar": "كلما زاد الرقم زادت السرعة",
+                "en": "Higher number = faster speed"
+            }
+        },
+        {
+            "type": "boolean",
+            "id": "show_icon",
+            "label": {
+                "ar": "إظهار أيقونة قبل الرسالة",
+                "en": "Show icon before message"
+            },
+            "format": "switch",
+            "value": true
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+.marquee-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.marquee-wrapper {
+    display: inline-flex;
+    animation: marquee linear infinite;
+    will-change: transform;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* للغة العربية نعكس الاتجاه */
+[dir="rtl"] .marquee-wrapper {
+    animation: marquee-rtl linear infinite;
+}
+
+@keyframes marquee-rtl {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* إيقاف الحركة مؤقتاً عند المرور بالماوس */
+.marquee-container:hover .marquee-wrapper {
+    animation-play-state: paused;
+}
+
+/* تنسيق العناصر */
+.marquee-item {
+    transition: opacity 0.3s;
+}
+
+.marquee-item:hover {
+    opacity: 0.9;
+}
+</style>

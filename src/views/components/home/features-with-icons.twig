@@ -1,0 +1,474 @@
+{# =============================================================================
+   سكشن: مميزات المتجر مع صور (Features with Icons)
+   الوصف: عرض مميزات المتجر في كروت جذابة مع أيقونات وصور توضيحية
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="features-with-icons-section py-16 md:py-20 bg-gradient-to-b from-white to-gray-50" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان القسم #}
+        <div class="section-title text-center mb-12">
+            <span class="inline-block text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">
+                {{ section.settings.badge_text | default('مميزاتنا') }}
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                {{ section.settings.title | default('لماذا تختار متجرنا؟') }}
+            </h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        {# شبكة المميزات #}
+        <div class="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            
+            {% for feature in section.settings.features %}
+                <div class="feature-card group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden {% if feature.highlight %}ring-2 ring-blue-500 ring-offset-2{% endif %}">
+                    
+                    {# خلفية متحركة عند التمرير #}
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    
+                    <div class="relative p-6 text-center">
+                        {# صورة الميزة (إذا وجدت) #}
+                        {% if feature.image %}
+                            <div class="feature-image mb-4 relative">
+                                <div class="w-24 h-24 mx-auto rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 p-1 group-hover:scale-110 transition-transform duration-300">
+                                    <img src="{{ feature.image }}" 
+                                         alt="{{ feature.title }}"
+                                         class="w-full h-full object-contain rounded-xl">
+                                </div>
+                                {# تأثير وميض #}
+                                <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity"></div>
+                            </div>
+                        {% else %}
+                            {# أيقونة الميزة (إذا لم توجد صورة) #}
+                            <div class="feature-icon mb-4">
+                                <div class="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 text-white flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                                    <span class="{{ feature.icon | default('sicon-star') }}"></span>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        {# محتوى الميزة #}
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            {{ feature.title }}
+                        </h3>
+                        
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            {{ feature.description }}
+                        </p>
+                        
+                        {# تفاصيل إضافية (اختياري) #}
+                        {% if feature.detail %}
+                            <div class="text-sm text-blue-600 font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                {{ feature.detail }}
+                            </div>
+                        {% endif %}
+                        
+                        {# خط سفلي متحرك #}
+                        <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {# صف إضافي من المميزات (إذا كان العدد أكبر من 4) #}
+        {% if section.settings.features | length > 4 %}
+            <div class="features-grid-secondary grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                {% for feature in section.settings.features | slice(4, 4) %}
+                    <div class="feature-mini-card bg-white rounded-xl shadow-sm hover:shadow-md transition p-4 flex items-center space-x-3 space-x-reverse">
+                        <div class="feature-mini-icon w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                            <span class="{{ feature.icon | default('sicon-check') }}"></span>
+                        </div>
+                        <div class="flex-1 text-right">
+                            <h4 class="font-medium text-gray-900 text-sm">{{ feature.title }}</h4>
+                            {% if feature.description %}
+                                <p class="text-xs text-gray-500 mt-1">{{ feature.description | slice(0, 50) }}...</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {# زر معرفة المزيد #}
+        {% if section.settings.show_more_button %}
+            <div class="text-center mt-12">
+                <a href="{{ section.settings.more_button_link | default('#') }}" 
+                   class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+                    <span>{{ section.settings.more_button_text | default('اكتشف المزيد من المميزات') }}</span>
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "مميزات المتجر مع صور",
+        "en": "Features with Icons"
+    },
+    "icon": "sicon-star",
+    "description": {
+        "ar": "عرض مميزات المتجر في كروت جذابة مع أيقونات وصور توضيحية",
+        "en": "Display store features in attractive cards with icons and images"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "badge_text",
+            "label": {
+                "ar": "نص الشارة",
+                "en": "Badge Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "مميزاتنا",
+                "en": "Our Features"
+            }
+        },
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم",
+                "en": "Section Title"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "لماذا تختار متجرنا؟",
+                "en": "Why Choose Us?"
+            }
+        },
+        {
+            "type": "string",
+            "id": "subtitle",
+            "label": {
+                "ar": "نص فرعي",
+                "en": "Subtitle"
+            },
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "placeholder": {
+                "ar": "أضف نصاً وصفياً للقسم...",
+                "en": "Add a descriptive text..."
+            }
+        },
+        {
+            "type": "select",
+            "id": "layout_style",
+            "label": {
+                "ar": "نمط التخطيط",
+                "en": "Layout Style"
+            },
+            "format": "dropdown-list",
+            "options": [
+                {
+                    "label": {
+                        "ar": "كروت كبيرة (4 مميزات)",
+                        "en": "Large Cards (4 Features)"
+                    },
+                    "value": "large-cards"
+                },
+                {
+                    "label": {
+                        "ar": "كروت متوسطة (6 مميزات)",
+                        "en": "Medium Cards (6 Features)"
+                    },
+                    "value": "medium-cards"
+                },
+                {
+                    "label": {
+                        "ar": "كروت صغيرة (8 مميزات)",
+                        "en": "Small Cards (8 Features)"
+                    },
+                    "value": "small-cards"
+                }
+            ],
+            "selected": [
+                {
+                    "value": "large-cards"
+                }
+            ]
+        },
+        {
+            "id": "features",
+            "type": "collection",
+            "format": "collection",
+            "label": {
+                "ar": "المميزات",
+                "en": "Features"
+            },
+            "item_label": {
+                "ar": "ميزة",
+                "en": "Feature"
+            },
+            "minLength": 2,
+            "maxLength": 8,
+            "value": [
+                {
+                    "icon": "sicon-truck",
+                    "image": "",
+                    "title": {
+                        "ar": "توصيل سريع",
+                        "en": "Fast Delivery"
+                    },
+                    "description": {
+                        "ar": "توصيل مجاني للطلبات فوق 200 ريال خلال 24 ساعة",
+                        "en": "Free shipping for orders above 200 SAR within 24 hours"
+                    },
+                    "detail": {
+                        "ar": "أسرع خدمة توصيل في المنطقة",
+                        "en": "Fastest delivery service in the region"
+                    },
+                    "highlight": true
+                },
+                {
+                    "icon": "sicon-shield-check",
+                    "image": "",
+                    "title": {
+                        "ar": "ضمان الجودة",
+                        "en": "Quality Guarantee"
+                    },
+                    "description": {
+                        "ar": "منتجات أصلية 100% مع ضمان استعادة النقود",
+                        "en": "100% authentic products with money-back guarantee"
+                    },
+                    "detail": "",
+                    "highlight": false
+                },
+                {
+                    "icon": "sicon-credit-card",
+                    "image": "",
+                    "title": {
+                        "ar": "دفع آمن",
+                        "en": "Secure Payment"
+                    },
+                    "description": {
+                        "ar": "طرق دفع متعددة وآمنة مع تشفير كامل",
+                        "en": "Multiple secure payment methods with full encryption"
+                    },
+                    "detail": "",
+                    "highlight": false
+                },
+                {
+                    "icon": "sicon-refresh",
+                    "image": "",
+                    "title": {
+                        "ar": "إرجاع مجاني",
+                        "en": "Free Returns"
+                    },
+                    "description": {
+                        "ar": "إرجاع خلال 14 يوم بدون أي رسوم",
+                        "en": "14-day free returns with no questions asked"
+                    },
+                    "detail": "",
+                    "highlight": false
+                }
+            ],
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "icon",
+                    "label": {
+                        "ar": "أيقونة الميزة",
+                        "en": "Feature Icon"
+                    },
+                    "format": "icon",
+                    "description": {
+                        "ar": "اختر أيقونة من مكتبة سله",
+                        "en": "Choose an icon from Salla library"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "image",
+                    "label": {
+                        "ar": "صورة الميزة (بديل الأيقونة)",
+                        "en": "Feature Image (Icon Alternative)"
+                    },
+                    "format": "image",
+                    "required": false,
+                    "description": {
+                        "ar": "يمكنك استخدام صورة بدلاً من الأيقونة - مقاس 200×200 بكسل",
+                        "en": "You can use an image instead of icon - size 200×200 px"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "title",
+                    "label": {
+                        "ar": "عنوان الميزة",
+                        "en": "Feature Title"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": true
+                },
+                {
+                    "type": "string",
+                    "id": "description",
+                    "label": {
+                        "ar": "وصف الميزة",
+                        "en": "Feature Description"
+                    },
+                    "format": "textarea",
+                    "multilanguage": true,
+                    "required": true
+                },
+                {
+                    "type": "string",
+                    "id": "detail",
+                    "label": {
+                        "ar": "تفاصيل إضافية (اختياري)",
+                        "en": "Additional Details (Optional)"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": false
+                },
+                {
+                    "type": "boolean",
+                    "id": "highlight",
+                    "label": {
+                        "ar": "تمييز هذه الميزة",
+                        "en": "Highlight this feature"
+                    },
+                    "format": "switch",
+                    "value": false
+                }
+            ]
+        },
+        {
+            "type": "boolean",
+            "id": "show_more_button",
+            "label": {
+                "ar": "إظهار زر 'معرفة المزيد'",
+                "en": "Show 'More Features' Button"
+            },
+            "format": "switch",
+            "value": false
+        },
+        {
+            "type": "string",
+            "id": "more_button_text",
+            "label": {
+                "ar": "نص الزر",
+                "en": "Button Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "اكتشف المزيد من المميزات",
+                "en": "Discover More Features"
+            },
+            "conditions": [
+                {
+                    "id": "show_more_button",
+                    "operation": "=",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "type": "items",
+            "id": "more_button_link",
+            "label": {
+                "ar": "رابط الزر",
+                "en": "Button Link"
+            },
+            "format": "variable-list",
+            "required": false,
+            "source": "custom",
+            "sources": [
+                {"label": "صفحة", "key": "pages", "value": "pages"},
+                {"label": "منتج", "key": "products", "value": "products"},
+                {"label": "رابط خارجي", "key": "custom", "value": "custom"}
+            ],
+            "conditions": [
+                {
+                    "id": "show_more_button",
+                    "operation": "=",
+                    "value": true
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+/* تنسيقات متقدمة */
+.feature-card {
+    position: relative;
+    z-index: 1;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(33, 99, 109, 0.05) 0%, rgba(33, 99, 109, 0) 100%);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: -1;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+/* تأثيرات للكروت الصغيرة */
+.feature-mini-card {
+    transition: all 0.3s ease;
+}
+
+.feature-mini-card:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(to left, #fff, #f8f9fa);
+}
+
+/* تنسيقات تجاوبية */
+@media (max-width: 768px) {
+    .features-grid {
+        gap: 1rem;
+    }
+    
+    .feature-card .w-24 {
+        width: 5rem;
+        height: 5rem;
+    }
+    
+    .features-grid-secondary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* أنيميشن للأيقونات */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+.feature-card:hover .feature-icon div,
+.feature-card:hover .feature-image div {
+    animation: float 2s ease-in-out infinite;
+}
+
+/* تأثير للكروت المميزة */
+.feature-card[class*="ring-2"] {
+    background: linear-gradient(135deg, #fff, #f0f9ff);
+}
+</style>

@@ -1,0 +1,536 @@
+{# =============================================================================
+   سكشن: تقييمات العملاء المتقدمة (Advanced Testimonials)
+   الوصف: عرض آراء العملاء بتصميم كروت متحركة مع صور وتقييمات نجوم
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="advanced-testimonials-section py-16 md:py-20 bg-gradient-to-b from-gray-50 to-white" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان القسم #}
+        <div class="section-title text-center mb-12">
+            <span class="inline-block text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">
+                {{ section.settings.badge_text | default('آراء العملاء') }}
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                {{ section.settings.title | default('ماذا يقول عملاؤنا عنا') }}
+            </h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        {# التقييمات الإحصائية (اختياري) #}
+        {% if section.settings.show_stats %}
+        <div class="stats-container grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-3xl mx-auto">
+            <div class="stat-item text-center p-4">
+                <div class="text-3xl md:text-4xl font-bold text-blue-600">+500</div>
+                <div class="text-sm text-gray-600 mt-1">عميل سعيد</div>
+            </div>
+            <div class="stat-item text-center p-4">
+                <div class="text-3xl md:text-4xl font-bold text-blue-600">4.8</div>
+                <div class="text-sm text-gray-600 mt-1">تقييم عام</div>
+            </div>
+            <div class="stat-item text-center p-4">
+                <div class="text-3xl md:text-4xl font-bold text-blue-600">+50</div>
+                <div class="text-sm text-gray-600 mt-1">تقييم جديد</div>
+            </div>
+            <div class="stat-item text-center p-4">
+                <div class="text-3xl md:text-4xl font-bold text-blue-600">98%</div>
+                <div class="text-sm text-gray-600 mt-1">توصية</div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {# شبكة التقييمات - تظهر بشكل مختلف حسب الاختيار #}
+        {% if section.settings.display_style == 'grid' %}
+            {# عرض شبكي #}
+            <div class="testimonials-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for testimonial in section.settings.testimonials %}
+                    <div class="testimonial-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100">
+                        <div class="flex items-center mb-4">
+                            {# صورة العميل #}
+                            <div class="w-16 h-16 rounded-full overflow-hidden ml-4 border-2 border-blue-100">
+                                {% if testimonial.avatar %}
+                                    <img src="{{ testimonial.avatar }}" alt="{{ testimonial.name }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xl font-bold">
+                                        {{ testimonial.name | slice(0, 1) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="flex-1">
+                                <h3 class="font-bold text-gray-900 text-lg">{{ testimonial.name }}</h3>
+                                {% if testimonial.position %}
+                                    <p class="text-sm text-gray-500">{{ testimonial.position }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        {# تقييم النجوم #}
+                        <div class="flex items-center mb-3">
+                            {% set rating = testimonial.rating | default(5) %}
+                            {% for i in 1..5 %}
+                                <svg class="w-5 h-5 {{ i <= rating ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            {% endfor %}
+                        </div>
+                        
+                        {# نص التقييم #}
+                        <blockquote class="text-gray-700 leading-relaxed mb-4">
+                            "{{ testimonial.text }}"
+                        </blockquote>
+                        
+                        {# تاريخ التقييم (اختياري) #}
+                        {% if testimonial.date %}
+                            <p class="text-xs text-gray-400 mt-2">{{ testimonial.date | date('d M Y') }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            
+        {% elseif section.settings.display_style == 'slider' %}
+            {# عرض سليدر #}
+            <div class="testimonials-slider relative">
+                <div class="swiper" id="testimonialsSlider-{{ section.id }}">
+                    <div class="swiper-wrapper">
+                        {% for testimonial in section.settings.testimonials %}
+                            <div class="swiper-slide">
+                                <div class="testimonial-card bg-white rounded-2xl shadow-lg p-8 mx-2 my-4">
+                                    <div class="flex flex-col items-center text-center">
+                                        {# صورة العميل #}
+                                        <div class="w-20 h-20 rounded-full overflow-hidden mb-4 border-4 border-blue-100">
+                                            {% if testimonial.avatar %}
+                                                <img src="{{ testimonial.avatar }}" alt="{{ testimonial.name }}" class="w-full h-full object-cover">
+                                            {% else %}
+                                                <div class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                                                    {{ testimonial.name | slice(0, 1) }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <h3 class="font-bold text-gray-900 text-xl mb-1">{{ testimonial.name }}</h3>
+                                        
+                                        {% if testimonial.position %}
+                                            <p class="text-sm text-gray-500 mb-3">{{ testimonial.position }}</p>
+                                        {% endif %}
+                                        
+                                        {# تقييم النجوم #}
+                                        <div class="flex items-center mb-4">
+                                            {% set rating = testimonial.rating | default(5) %}
+                                            {% for i in 1..5 %}
+                                                <svg class="w-5 h-5 {{ i <= rating ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                                </svg>
+                                            {% endfor %}
+                                        </div>
+                                        
+                                        {# أيقونة اقتباس #}
+                                        <svg class="w-8 h-8 text-blue-200 mb-2" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                                        </svg>
+                                        
+                                        <blockquote class="text-gray-700 leading-relaxed text-lg">
+                                            {{ testimonial.text }}
+                                        </blockquote>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    {# أزرار التنقل #}
+                    <div class="swiper-button-next !text-blue-600 !bg-white !w-12 !h-12 rounded-full shadow-lg hover:!bg-blue-50 transition after:!text-lg"></div>
+                    <div class="swiper-button-prev !text-blue-600 !bg-white !w-12 !h-12 rounded-full shadow-lg hover:!bg-blue-50 transition after:!text-lg"></div>
+                    
+                    {# نقاط التصفح #}
+                    <div class="swiper-pagination !relative !bottom-0 mt-8"></div>
+                </div>
+            </div>
+            
+        {% elseif section.settings.display_style == 'masonry' %}
+            {# عرض متداخل (Masonry) #}
+            <div class="testimonials-masonry columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                {% for testimonial in section.settings.testimonials %}
+                    <div class="testimonial-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 break-inside-avoid mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-14 h-14 rounded-full overflow-hidden ml-3 border-2 border-blue-100">
+                                {% if testimonial.avatar %}
+                                    <img src="{{ testimonial.avatar }}" alt="{{ testimonial.name }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-lg font-bold">
+                                        {{ testimonial.name | slice(0, 1) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="flex-1">
+                                <h3 class="font-bold text-gray-900">{{ testimonial.name }}</h3>
+                                <div class="flex items-center mt-1">
+                                    {% set rating = testimonial.rating | default(5) %}
+                                    {% for i in 1..5 %}
+                                        <svg class="w-4 h-4 {{ i <= rating ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                        </svg>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="text-gray-700 leading-relaxed">
+                            "{{ testimonial.text }}"
+                        </blockquote>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {# زر إضافة تقييم #}
+        {% if section.settings.show_add_button %}
+            <div class="text-center mt-12">
+                <button class="inline-flex items-center bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105">
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                    </svg>
+                    <span>أضف تقييمك</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "تقييمات العملاء المتقدمة",
+        "en": "Advanced Testimonials"
+    },
+    "icon": "sicon-chat-bubbles",
+    "description": {
+        "ar": "عرض آراء العملاء بتصميم كروت متحركة مع صور وتقييمات نجوم",
+        "en": "Display customer reviews with images and star ratings"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "badge_text",
+            "label": {
+                "ar": "نص الشارة",
+                "en": "Badge Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "آراء العملاء",
+                "en": "Testimonials"
+            }
+        },
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم",
+                "en": "Section Title"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "ماذا يقول عملاؤنا عنا",
+                "en": "What Our Customers Say"
+            }
+        },
+        {
+            "type": "string",
+            "id": "subtitle",
+            "label": {
+                "ar": "نص فرعي",
+                "en": "Subtitle"
+            },
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "placeholder": {
+                "ar": "أضف نصاً وصفياً للقسم...",
+                "en": "Add a descriptive text..."
+            }
+        },
+        {
+            "type": "select",
+            "id": "display_style",
+            "label": {
+                "ar": "نمط العرض",
+                "en": "Display Style"
+            },
+            "format": "dropdown-list",
+            "options": [
+                {
+                    "label": {
+                        "ar": "شبكة (3 أعمدة)",
+                        "en": "Grid (3 Columns)"
+                    },
+                    "value": "grid"
+                },
+                {
+                    "label": {
+                        "ar": "سليدر متحرك",
+                        "en": "Slider"
+                    },
+                    "value": "slider"
+                },
+                {
+                    "label": {
+                        "ar": "عرض متداخل (Masonry)",
+                        "en": "Masonry"
+                    },
+                    "value": "masonry"
+                }
+            ],
+            "selected": [
+                {
+                    "value": "grid"
+                }
+            ]
+        },
+        {
+            "type": "boolean",
+            "id": "show_stats",
+            "label": {
+                "ar": "إظهار الإحصائيات",
+                "en": "Show Statistics"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "boolean",
+            "id": "show_add_button",
+            "label": {
+                "ar": "إظهار زر 'أضف تقييمك'",
+                "en": "Show 'Add Review' Button"
+            },
+            "format": "switch",
+            "value": false
+        },
+        {
+            "id": "testimonials",
+            "type": "collection",
+            "format": "collection",
+            "label": {
+                "ar": "التقييمات",
+                "en": "Testimonials"
+            },
+            "item_label": {
+                "ar": "تقييم",
+                "en": "Review"
+            },
+            "minLength": 1,
+            "maxLength": 30,
+            "value": [
+                {
+                    "name": "أحمد محمد",
+                    "avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_male.png",
+                    "rating": 5,
+                    "text": {
+                        "ar": "منتج رائع جداً وسرعة في التوصيل. تعامل راقي واستجابة سريعة للاستفسارات. أنصح بالتعامل معهم.",
+                        "en": "Great product and fast delivery. Professional dealing and quick response to inquiries. I recommend dealing with them."
+                    },
+                    "position": "عميل مميز",
+                    "date": "2024-01-15"
+                },
+                {
+                    "name": "سارة أحمد",
+                    "avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_female.png",
+                    "rating": 5,
+                    "text": {
+                        "ar": "تجربة تسوق ممتازة. الموقع سهل الاستخدام والمنتجات أصلية. سأكرر التجربة بالتأكيد.",
+                        "en": "Excellent shopping experience. Easy to use website and authentic products. I will definitely repeat the experience."
+                    },
+                    "position": "عميل",
+                    "date": "2024-01-10"
+                },
+                {
+                    "name": "خالد العمري",
+                    "avatar": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/avatar_male.png",
+                    "rating": 4,
+                    "text": {
+                        "ar": "منتج جيد ولكن الشحن تأخر قليلاً. الفريق تواصل معي واعتذر، خدمة عملاء ممتازة.",
+                        "en": "Good product but shipping was a bit delayed. The team contacted me and apologized, excellent customer service."
+                    },
+                    "position": "عميل",
+                    "date": "2024-01-05"
+                }
+            ],
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "name",
+                    "label": {
+                        "ar": "اسم العميل",
+                        "en": "Customer Name"
+                    },
+                    "format": "text",
+                    "required": true
+                },
+                {
+                    "type": "string",
+                    "id": "avatar",
+                    "label": {
+                        "ar": "صورة العميل",
+                        "en": "Customer Avatar"
+                    },
+                    "format": "image",
+                    "required": false,
+                    "description": {
+                        "ar": "المقاس المناسب: 200×200 بكسل",
+                        "en": "Recommended size: 200×200 px"
+                    }
+                },
+                {
+                    "type": "number",
+                    "id": "rating",
+                    "label": {
+                        "ar": "التقييم (من 1 إلى 5)",
+                        "en": "Rating (1 to 5)"
+                    },
+                    "format": "number",
+                    "required": true,
+                    "minimum": 1,
+                    "maximum": 5,
+                    "value": 5
+                },
+                {
+                    "type": "string",
+                    "id": "text",
+                    "label": {
+                        "ar": "نص التقييم",
+                        "en": "Review Text"
+                    },
+                    "format": "textarea",
+                    "multilanguage": true,
+                    "required": true
+                },
+                {
+                    "type": "string",
+                    "id": "position",
+                    "label": {
+                        "ar": "المنصب أو اللقب",
+                        "en": "Position/Title"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": false,
+                    "placeholder": {
+                        "ar": "مثال: عميل مميز، مدير تسويق...",
+                        "en": "e.g. VIP Customer, Marketing Manager..."
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "date",
+                    "label": {
+                        "ar": "تاريخ التقييم",
+                        "en": "Review Date"
+                    },
+                    "format": "date",
+                    "required": false
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+/* تنسيقات إضافية */
+.testimonials-masonry {
+    column-gap: 1.5rem;
+}
+
+.testimonials-masonry > div {
+    margin-bottom: 1.5rem;
+}
+
+/* تنسيقات السليدر */
+.testimonials-slider .swiper-button-next,
+.testimonials-slider .swiper-button-prev {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.testimonials-slider:hover .swiper-button-next,
+.testimonials-slider:hover .swiper-button-prev {
+    opacity: 1;
+}
+
+.swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #cbd5e0 !important;
+    opacity: 1 !important;
+}
+
+.swiper-pagination-bullet-active {
+    background: #21636d !important;
+    width: 12px;
+    height: 12px;
+}
+
+/* تأثيرات حركية */
+.testimonial-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.testimonial-card:hover {
+    transform: translateY(-4px);
+}
+
+/* تجاوب للجوال */
+@media (max-width: 768px) {
+    .testimonials-masonry {
+        columns: 1;
+    }
+    
+    .testimonials-slider .swiper-button-next,
+    .testimonials-slider .swiper-button-prev {
+        display: none;
+    }
+}
+</style>
+
+{% if section.settings.display_style == 'slider' %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('#testimonialsSlider-{{ section.id }}', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+    }
+});
+</script>
+{% endif %}

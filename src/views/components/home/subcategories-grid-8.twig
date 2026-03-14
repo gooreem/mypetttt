@@ -1,0 +1,450 @@
+{# =============================================================================
+   سكشن: أقسام فرعية - 8 مربعات (8 Subcategories Grid)
+   الوصف: عرض 8 أقسام فرعية في شبكة من المربعات مع صور وتأثيرات حركية
+   Created for: متجر mypetttt على منصة سله
+   ============================================================================= #}
+
+<section class="subcategories-grid-8-section py-16 md:py-20 bg-gray-50" dir="{{ direction }}">
+    <div class="container mx-auto px-4">
+        {# عنوان القسم #}
+        <div class="section-title text-center mb-12">
+            <span class="inline-block text-blue-600 font-semibold text-sm uppercase tracking-wider mb-2">
+                {{ section.settings.badge_text | default('تصفح الأقسام') }}
+            </span>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                {{ section.settings.title | default('الأقسام الفرعية') }}
+            </h2>
+            {% if section.settings.subtitle %}
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">{{ section.settings.subtitle }}</p>
+            {% endif %}
+        </div>
+        
+        {# شبكة 8 أقسام - تصميم مرن #}
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-8 gap-3 md:gap-4">
+            
+            {% for subcategory in section.settings.subcategories %}
+                <div class="subcategory-card group relative bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+                    
+                    {# صورة القسم الفرعي #}
+                    <div class="relative pt-[100%] overflow-hidden">
+                        <img src="{{ subcategory.image | default('https://via.placeholder.com/200x200?text=Subcategory') }}" 
+                             alt="{{ subcategory.name }}"
+                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        
+                        {# خلفية متدرجة عند التمرير #}
+                        <div class="absolute inset-0 bg-gradient-to-t from-blue-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        
+                        {# أيقونة أو علامة (اختياري) #}
+                        {% if subcategory.icon %}
+                            <div class="absolute top-2 right-2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-blue-600 transform group-hover:scale-110 transition">
+                                <span class="{{ subcategory.icon }}"></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {# محتوى القسم #}
+                    <div class="p-3 text-center">
+                        <h3 class="font-bold text-gray-800 text-sm md:text-base mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
+                            {{ subcategory.name }}
+                        </h3>
+                        
+                        {% if subcategory.products_count %}
+                            <p class="text-xs text-gray-500">
+                                {{ subcategory.products_count }} منتج
+                            </p>
+                        {% endif %}
+                    </div>
+                    
+                    {# رابط القسم (يجعل الكارت كله قابل للنقر) #}
+                    <a href="{{ subcategory.link | default('#') }}" class="absolute inset-0 z-10" aria-label="{{ subcategory.name }}"></a>
+                </div>
+            {% endfor %}
+        </div>
+        
+        {# عرض جميع الأقسام #}
+        {% if section.settings.show_view_all %}
+            <div class="text-center mt-10">
+                <a href="{{ section.settings.view_all_link | default('/categories') }}" 
+                   class="inline-flex items-center bg-white border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-3 px-8 rounded-lg transition-all transform hover:scale-105">
+                    <span>عرض جميع الأقسام</span>
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+{% schema %}
+{
+    "name": {
+        "ar": "8 أقسام فرعية",
+        "en": "8 Subcategories Grid"
+    },
+    "icon": "sicon-layout-grid",
+    "description": {
+        "ar": "عرض 8 أقسام فرعية في شبكة من المربعات مع صور وتأثيرات حركية",
+        "en": "Display 8 subcategories in a grid of squares with images and animations"
+    },
+    "settings": [
+        {
+            "type": "string",
+            "id": "badge_text",
+            "label": {
+                "ar": "نص الشارة",
+                "en": "Badge Text"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "تصفح الأقسام",
+                "en": "Browse Categories"
+            }
+        },
+        {
+            "type": "string",
+            "id": "title",
+            "label": {
+                "ar": "عنوان القسم",
+                "en": "Section Title"
+            },
+            "format": "text",
+            "multilanguage": true,
+            "value": {
+                "ar": "الأقسام الفرعية",
+                "en": "Subcategories"
+            }
+        },
+        {
+            "type": "string",
+            "id": "subtitle",
+            "label": {
+                "ar": "نص فرعي",
+                "en": "Subtitle"
+            },
+            "format": "textarea",
+            "multilanguage": true,
+            "required": false,
+            "placeholder": {
+                "ar": "أضف نصاً وصفياً للقسم...",
+                "en": "Add a descriptive text..."
+            }
+        },
+        {
+            "id": "subcategories",
+            "type": "collection",
+            "format": "collection",
+            "label": {
+                "ar": "الأقسام الفرعية",
+                "en": "Subcategories"
+            },
+            "item_label": {
+                "ar": "قسم فرعي",
+                "en": "Subcategory"
+            },
+            "minLength": 4,
+            "maxLength": 8,
+            "value": [
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/MopzhoqpTkDObcKc8Q8n77AuydanfsGXdZO7iinH.jpg",
+                    "icon": "sicon-dog-paw",
+                    "name": {
+                        "ar": "طعام جاف للكلاب",
+                        "en": "Dry Dog Food"
+                    },
+                    "products_count": 45,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/3gOhYSaIhaHxhH2IHWxJYDl9JHwxP6dGKiZFSq4K.jpg",
+                    "icon": "sicon-cat",
+                    "name": {
+                        "ar": "طعام رطب للقطط",
+                        "en": "Wet Cat Food"
+                    },
+                    "products_count": 32,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/8kH2jHsL9pQrTsV5wNxYzA1bC3dE4fG5hI6jK7lM.jpg",
+                    "icon": "sicon-pet-toys",
+                    "name": {
+                        "ar": "ألعاب تفاعلية",
+                        "en": "Interactive Toys"
+                    },
+                    "products_count": 28,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/9mNxLkHjGfDcVbNmQwErTyUiOpAsDfGhJkLzXcVb.jpg",
+                    "icon": "sicon-dog-bed",
+                    "name": {
+                        "ar": "أسرة ومخدات",
+                        "en": "Beds & Pillows"
+                    },
+                    "products_count": 19,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/2aSdFgHjKlQwErTyUiOpZxCvBnMqWeRtYuIoPa.jpg",
+                    "icon": "sicon-grooming",
+                    "name": {
+                        "ar": "أدوات العناية",
+                        "en": "Grooming Tools"
+                    },
+                    "products_count": 37,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/5lKjHgFdSaPpOoIiUuYtRrEeWwQqZzXcVvBbNn.jpg",
+                    "icon": "sicon-vitamins",
+                    "name": {
+                        "ar": "فيتامينات ومكملات",
+                        "en": "Vitamins & Supplements"
+                    },
+                    "products_count": 24,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/7qWeRtYuIoPaAsDfGhJkLzXcVbNmQwErTyUiOp.jpg",
+                    "icon": "sicon-bowl",
+                    "name": {
+                        "ar": "أطباق وملحقاتها",
+                        "en": "Bowls & Accessories"
+                    },
+                    "products_count": 41,
+                    "link": null
+                },
+                {
+                    "image": "https://cdn.salla.sa/ZrBEO/1zXcVbNmQwErTyUiOpAsDfGhJkLzXcVbNmQwEr.jpg",
+                    "icon": "sicon-carrier",
+                    "name": {
+                        "ar": "حقائب سفر",
+                        "en": "Travel Carriers"
+                    },
+                    "products_count": 16,
+                    "link": null
+                }
+            ],
+            "fields": [
+                {
+                    "type": "string",
+                    "id": "image",
+                    "label": {
+                        "ar": "صورة القسم",
+                        "en": "Category Image"
+                    },
+                    "format": "image",
+                    "required": true,
+                    "description": {
+                        "ar": "المقاس المناسب: 200×200 بكسل",
+                        "en": "Recommended size: 200×200 px"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "icon",
+                    "label": {
+                        "ar": "أيقونة (اختياري)",
+                        "en": "Icon (Optional)"
+                    },
+                    "format": "icon",
+                    "description": {
+                        "ar": "أيقونة صغيرة تظهر على الصورة",
+                        "en": "Small icon overlay on the image"
+                    }
+                },
+                {
+                    "type": "string",
+                    "id": "name",
+                    "label": {
+                        "ar": "اسم القسم الفرعي",
+                        "en": "Subcategory Name"
+                    },
+                    "format": "text",
+                    "multilanguage": true,
+                    "required": true
+                },
+                {
+                    "type": "number",
+                    "id": "products_count",
+                    "label": {
+                        "ar": "عدد المنتجات",
+                        "en": "Products Count"
+                    },
+                    "format": "number",
+                    "required": false,
+                    "minimum": 0
+                },
+                {
+                    "type": "items",
+                    "id": "link",
+                    "label": {
+                        "ar": "الرابط",
+                        "en": "Link"
+                    },
+                    "format": "variable-list",
+                    "required": false,
+                    "source": "custom",
+                    "sources": [
+                        {"label": {"ar": "تصنيف", "en": "Category"}, "key": "categories", "value": "categories"},
+                        {"label": {"ar": "منتج", "en": "Product"}, "key": "products", "value": "products"},
+                        {"label": {"ar": "رابط خارجي", "en": "Custom URL"}, "key": "custom", "value": "custom"}
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "layout_style",
+            "label": {
+                "ar": "نمط التخطيط",
+                "en": "Layout Style"
+            },
+            "format": "dropdown-list",
+            "options": [
+                {
+                    "label": {
+                        "ar": "شبكة منتظمة",
+                        "en": "Regular Grid"
+                    },
+                    "value": "regular"
+                },
+                {
+                    "label": {
+                        "ar": "شبكة مع هوامش",
+                        "en": "Grid with Gaps"
+                    },
+                    "value": "gapped"
+                },
+                {
+                    "label": {
+                        "ar": "كروت دائرية",
+                        "en": "Circular Cards"
+                    },
+                    "value": "circular"
+                }
+            ],
+            "selected": [
+                {
+                    "value": "regular"
+                }
+            ]
+        },
+        {
+            "type": "boolean",
+            "id": "show_view_all",
+            "label": {
+                "ar": "إظهار رابط عرض الكل",
+                "en": "Show View All Link"
+            },
+            "format": "switch",
+            "value": true
+        },
+        {
+            "type": "items",
+            "id": "view_all_link",
+            "label": {
+                "ar": "رابط عرض الكل",
+                "en": "View All Link"
+            },
+            "format": "variable-list",
+            "required": false,
+            "source": "custom",
+            "sources": [
+                {"label": {"ar": "صفحة الأقسام", "en": "Categories Page"}, "key": "categories_link", "value": "categories_link"},
+                {"label": {"ar": "رابط خارجي", "en": "Custom URL"}, "key": "custom", "value": "custom"}
+            ],
+            "conditions": [
+                {
+                    "id": "show_view_all",
+                    "operation": "=",
+                    "value": true
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<style>
+/* تنسيقات حسب نمط التخطيط */
+{% if section.settings.layout_style == 'circular' %}
+    .subcategory-card .pt-\[100\%\] {
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    
+    .subcategory-card .absolute.inset-0 {
+        border-radius: 50%;
+    }
+    
+    .subcategory-card:hover img {
+        transform: scale(1.1) rotate(3deg);
+    }
+{% elseif section.settings.layout_style == 'gapped' %}
+    .grid {
+        gap: 1rem;
+    }
+    
+    .subcategory-card {
+        border-radius: 1rem;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+{% endif %}
+
+/* تأثيرات حركية متقدمة */
+.subcategory-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.subcategory-card:hover {
+    transform: translateY(-4px);
+}
+
+/* تأثير نبض خفيف للصورة */
+@keyframes softPulse {
+    0% { box-shadow: 0 0 0 0 rgba(33, 99, 109, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(33, 99, 109, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(33, 99, 109, 0); }
+}
+
+.subcategory-card:hover {
+    animation: softPulse 2s infinite;
+}
+
+/* تنسيق النصوص الطويلة */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* تجاوب للشاشات الصغيرة جداً */
+@media (max-width: 480px) {
+    .subcategory-card .p-3 {
+        padding: 0.5rem;
+    }
+    
+    .subcategory-card h3 {
+        font-size: 0.75rem;
+    }
+    
+    .subcategory-card p {
+        font-size: 0.7rem;
+    }
+}
+
+/* تأثير توهج للكروت */
+@keyframes glow {
+    0% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    50% { box-shadow: 0 10px 15px -3px rgba(33, 99, 109, 0.2); }
+    100% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+}
+
+.subcategory-card:hover {
+    animation: glow 2s infinite;
+}
+</style>
