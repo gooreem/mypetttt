@@ -1,28 +1,32 @@
 {
     "name": {
-        "ar": "ماى بيت - تجربة أساسية 2",
-        "en": "MyPetttt - Basic Test 2"
+        "ar": "ماى بيت - اختبار بانر",
+        "en": "MyPetttt - Banner Test"
     },
     "repository": "https://github.com/gooreem/mypetttt",
     "author_email": "goreem.eg@gmail.com",
     "features": [
-        "component-enhanced-slider"
+        "component-test-banner"
     ],
     "components": [
         {
-            "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
+            "key": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
             "title": {
-                "en": "Enhanced Slider",
-                "ar": "صور متحركة (محسنة)"
+                "en": "Test Banner",
+                "ar": "بانر تجريبي"
             },
-            "icon": "sicon-image-carousel",
-            "path": "home.enhanced-slider",
+            "icon": "sicon-image",
+            "path": "home.test-banner",
             "fields": [
                 {
-                    "type": "static",
-                    "format": "description",
-                    "id": "static-desc",
-                    "value": "<div style='background:#21636d;color:white;padding:30px;border-radius:12px;text-align:center;font-size:20px;'><h2>✅ سكشن الصور المتحركة يعمل</h2><p>إذا ظهر هذا النص، فالسكشن الأساسي الثاني يعمل أيضاً.</p></div>"
+                    "type": "string",
+                    "id": "banner_image",
+                    "label": {
+                        "ar": "صورة البانر",
+                        "en": "Banner Image"
+                    },
+                    "format": "image",
+                    "required": true
                 }
             ]
         }
