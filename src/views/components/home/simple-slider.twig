@@ -1,41 +1,25 @@
-{# templates for simple-slider section #}
-<section class="py-12 bg-gray-50" dir="{{ direction }}">
+{# Simple Slider Section #}
+<section class="py-12">
     <div class="container mx-auto px-4">
-        {# عنوان السليدر العام - يظهر إذا كتبت عنوان في حقل "عنوان السليدر" #}
         {% if section.settings.main_title %}
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8">{{ section.settings.main_title }}</h2>
+            <h2 class="text-3xl font-bold text-center mb-8">{{ section.settings.main_title }}</h2>
         {% endif %}
 
-        {# هنا تبدأ السحر: التحقق من وجود صور مضافة #}
-        {% if section.settings.slides and section.settings.slides|length > 0 %}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {# هذه الحلقة (loop) هي التي تقرأ كل صورة أضفتها في لوحة التحكم وتكرر الكود الذي بداخلها #}
+        {% if section.settings.slides %}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {% for slide in section.settings.slides %}
-                    <div class="bg-white rounded-xl shadow-md overflow-hidden transition-transform hover:scale-105 duration-300">
-                        {# عرض الصورة - هذا هو المفتاح #}
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                         {% if slide.image %}
-                            <img src="{{ slide.image }}" 
-                                 alt="{{ slide.title | default('صورة السليدر') }}" 
-                                 class="w-full h-64 object-cover">
+                            <img src="{{ slide.image }}" alt="{{ slide.title }}" class="w-full h-48 object-cover">
                         {% endif %}
-                        
-                        {# عرض عنوان الصورة - هذا هو المفتاح الآخر #}
                         {% if slide.title %}
                             <div class="p-4">
-                                <h3 class="text-lg font-semibold text-gray-800 text-center">{{ slide.title }}</h3>
+                                <h3 class="font-bold text-xl">{{ slide.title }}</h3>
                             </div>
                         {% endif %}
                     </div>
                 {% endfor %}
             </div>
-        {% else %}
-            {# رسالة تظهر فقط للمطور إذا لم يضف صوراً بعد #}
-            {% if is_developer_mode %}
-                <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-6 rounded-lg text-center">
-                    <p class="font-bold mb-2">⚠️ سكشن: سليدر بسيط</p>
-                    <p class="text-sm">لم تقم بإضافة أي صور بعد. اذهب إلى لوحة التحكم > تخصيص الصفحة الرئيسية، اختر هذا السكشن، وأضف بعض الصور.</p>
-                </div>
-            {% endif %}
         {% endif %}
     </div>
 </section>
